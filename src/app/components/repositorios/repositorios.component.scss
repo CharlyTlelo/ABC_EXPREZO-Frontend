@@ -1,0 +1,15 @@
+.table-primary {
+  background-color: #30a9ad; // Usando tu variable $primary-color
+  color: white;
+}
+
+.btn-outline-success {
+  border-color: #30a9ad;
+  color: #30a9ad;
+  width: 100px;
+  
+  &:hover {
+    background-color: #30a9ad;
+    color: white;
+  }
+}

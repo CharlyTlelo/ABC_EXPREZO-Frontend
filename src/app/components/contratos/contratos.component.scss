@@ -1,0 +1,26 @@
+.btn_add{
+    background-color: #009c03;
+    color: white;
+    font-weight: bold;
+}
+
+/* Asegurar que la tabla use un layout fijo */
+.table-fixed {
+    table-layout: fixed;
+    width: 100%;
+}
+/* Ajustar el texto dentro de las celdas */
+.table-fixed th,
+.table-fixed td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.text-center{
+    a{
+        background-color: #009c03;
+        color: white;
+        width: 90px;
+    }
+}

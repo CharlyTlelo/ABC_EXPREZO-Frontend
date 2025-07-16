@@ -1,0 +1,38 @@
+.button-container {
+  display: flex;
+  justify-content: center; // Centra horizontalmente
+  align-items: center; // Centra verticalmente
+  gap: 100px; // Espacio entre botones
+  margin-top: 40px; // Ajusta según necesidad
+}
+
+.button-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px; // Espacio entre imagen y texto
+}
+
+.custom-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05); // Efecto hover opcional
+  }
+
+  img {
+    width: 150px; // Ajusta según tamaño deseado
+    height: auto;
+    border-radius: 50%; // Opcional para imágenes circulares
+  }
+}
+
+.button-text {
+
+  text-transform: uppercase; // Para mayúsculas como en tu imagen
+  font-size: 20px;
+}

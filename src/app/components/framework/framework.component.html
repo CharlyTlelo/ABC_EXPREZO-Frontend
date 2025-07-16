@@ -1,0 +1,20 @@
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th>TECNOLOGIA</th>
+          <th>CATEGORIA</th>
+          <th>VERSIÓN ACTUAL</th>
+          <th>PRÓXIMA VERSIÓN</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tech of technologies">
+          <td>{{ tech.tecnologia }}</td>
+          <td>{{ tech.categoria }}</td>
+          <td>{{ tech.versionActual }}</td>
+          <td>{{ tech.proximaVersion }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

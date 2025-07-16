@@ -1,0 +1,19 @@
+ul{
+    margin-left: 5rem;
+}
+
+a {
+  text-decoration: none;
+  color: #333; /* color base */
+  margin-right: 20px;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #e57373; /* rojo tenue al hacer hover */
+}
+
+a.active-link {
+  color: red; /* rojo cuando está activo */
+  font-weight: bold;
+}

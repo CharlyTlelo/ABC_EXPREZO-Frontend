@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Repositorios del Proyecto</h2>
+  
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered shadow-sm">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col" class="w-15">Proyecto</th>
+          <th scope="col" class="w-50">Repositorio</th>
+          <th scope="col" class="w-55 text-center">Enlace</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let repo of repositorios">
+          <td>{{ repo.proyecto }}</td>
+          <td>{{ repo.repositorio }}</td>
+          <td class="text-center">
+            <a 
+              [href]="repo.url" 
+              target="_blank" 
+              class="btn btn-outline-success btn-sm"
+              title="Ir al repositorio"
+            >
+              <i class="bi bi-check-circle-fill"></i> Ver
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

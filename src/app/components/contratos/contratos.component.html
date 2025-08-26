@@ -1,39 +1,49 @@
-<div class="container mt-4">
-  <h1 class="title text-center mb-4">Contratos de desarrollo</h1>
-
-  <div class="d-flex justify-content-start mb-3">
-    <button class="btn btn_add" (click)="agregarContrato()">
-      <i class="bi bi-plus-circle"></i>+ Agregar contrato
+<div class="card p-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="m-0">Contratos</h2>
+    <button class="btn btn_add" (click)="irAgregar()">
+      <p>Agregar contrato</p>
     </button>
   </div>
 
   <div class="table-responsive">
-    <table class="table table-hover table-bordered shadow-sm">
-      <thead class="table-primary">
+    <table class="table align-middle">
+      <thead>
         <tr>
-          <th scope="col" class="w-15">Folio</th>
-          <th scope="col" class="w-20">Contrato</th>
-          <th scope="col" class="w-45">Descripción</th>
-          <th scope="col" class="w-20 text-center">Modelado</th>
-          <th scope="col" class="w-20 text-center">Estatus</th>
+          <th>Folio</th>
+          <th>Contrato</th>
+          <th>Descripción</th>
+          <th>Estatus</th>
+          <th>Modelo</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let cont of contrato">
-          <td>{{ cont.folio }}</td>
-          <td>{{ cont.contrato }}</td>
-          <td>{{ cont.descripcion }}</td>
-          <td class="text-center">
-            <a 
-              [routerLink]="['/abczorro/contratos', cont.folio]" 
-              class="btn btn-outline-success btn-sm"
-              title="Ver contrato"
+        <tr *ngFor="let c of contratos()">
+          <td>{{ c.folio }}</td>
+          <td>{{ c.contrato }}</td>
+          <td>{{ c.descripcion }}</td>
+          <td>
+            <span
+              class="badge text-bg-secondary"
+              *ngIf="c.estatus === 'Pendiente'"
+              >Pendiente</span
             >
-              <i class="bi bi-check-circle-fill"></i> ir
-            </a>
-
+            <span class="badge text-bg-info" *ngIf="c.estatus === 'En revision'"
+              >En revisión</span
+            >
+            <span class="badge text-bg-success" *ngIf="c.estatus === 'Aprobado'"
+              >Aprobado</span
+            >
+            <span class="badge text-bg-danger" *ngIf="c.estatus === 'Rechazado'"
+              >Rechazado</span
+            >
           </td>
-          <td>Pendiente</td>
+          <td>
+            <button class="btn btn-ir" (click)="verDetalle(c.folio)">Ir</button>
+          </td>
+        </tr>
+        <tr *ngIf="contratos().length === 0">
+          <td colspan="5" class="text-center text-muted">Sin contratos</td>
         </tr>
       </tbody>
     </table>

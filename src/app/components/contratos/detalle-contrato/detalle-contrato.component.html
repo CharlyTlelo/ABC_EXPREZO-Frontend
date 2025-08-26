@@ -1,3 +1,47 @@
-<button routerLink="/abczorro/contratos" class="btn btn-outline-primary mb-3">
-  <i class="bi bi-arrow-left-circle"></i> Regresar
-</button>
+<div class="ex-card">
+  <div class="ex-card__header">
+    <div>
+      <h3 class="m-0">Agregar nuevo contrato</h3>
+      <small>Completa la información del contrato</small>
+    </div>
+  </div>
+
+  <form class="ex-form" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+    <div class="ex-field">
+      <label class="ex-label">Folio</label>
+      <input class="ex-input" type="text" formControlName="folio" placeholder="Nombre folio" />
+      <div class="ex-error" *ngIf="form.controls.folio.touched && form.controls.folio.invalid">
+        El folio es obligatorio (ej. "contrato-01").
+      </div>
+    </div>
+
+    <div class="ex-field">
+      <label class="ex-label">Contrato</label>
+      <input class="ex-input" type="text" formControlName="contrato" placeholder="Nombre del contrato" />
+      <div class="ex-error" *ngIf="form.controls.contrato.touched && form.controls.contrato.invalid">
+        El nombre del contrato es obligatorio..
+      </div>
+    </div>
+
+    <div class="ex-field">
+      <label class="ex-label">Descripción</label>
+      <textarea rows="3" class="ex-textarea" formControlName="descripcion" placeholder="Descripcion del proyecto"></textarea>
+      <div class="ex-error" *ngIf="form.controls.descripcion.touched && form.controls.descripcion.invalid">
+        La descripción es obligatoria, y debe ser lo mas clara posible para entendimiento del equipo Exprezo y terceros.
+      </div>
+    </div>
+
+    <div class="ex-actions">
+      <button class="ex-btn ex-btn--primary" type="submit" [disabled]="form.invalid || saving">
+        Agregar
+      </button>
+      <button class="ex-btn ex-btn--ghost" type="button" (click)="cancelar()">
+        Cancelar
+      </button>
+    </div>
+
+    <div class="alert alert-success mt-3" *ngIf="guardadoOK">
+      Información guardada con estatus <strong>Pendiente</strong>.
+    </div>
+  </form>
+</div>

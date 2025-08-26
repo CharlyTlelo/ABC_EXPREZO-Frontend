@@ -1,0 +1,80 @@
+/* Colores ABC Exprezo: usa los que ya tengas en :root; aquí dejo fallbacks */
+:root {
+  --ex-primary: var(--abc-primary, #4f46e5);      /* fallback índigo */
+  --ex-primary-contrast: #ffffff;
+  --ex-border: #e5e7eb;
+  --ex-muted: #6b7280;
+  --ex-bg: #ffffff;
+}
+
+.ex-card {
+  background: var(--ex-bg);
+  border: 1px solid var(--ex-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0,0,0,.04);
+  padding: 1.25rem;
+
+  &__header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: .75rem; margin-bottom: 1rem;
+    border-bottom: 1px solid var(--ex-border);
+
+    h3 { 
+        font-weight: 700; 
+        padding: 0  0 20px 0;
+    }
+    small { 
+        color: var(--ex-muted); 
+    }
+  }
+}
+
+.ex-form { max-width: 880px; }
+
+.ex-field { margin-bottom: 1rem; }
+
+.ex-label {
+  display: inline-block;
+  margin-bottom: .35rem;
+  font-weight: 600;
+}
+
+.ex-input, .ex-textarea, .ex-select {
+  width: 100%;
+  border: 1px solid #ffa5a5;
+  border-radius: 12px;
+  padding: .75rem .9rem;
+  outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+  &:focus {
+    border-color: var(--ex-primary);
+    box-shadow: 0 0 0 4px rgba(70, 144, 229, 0.15); /* halo */
+  }
+}
+
+.ex-error {
+  margin-top: .35rem;
+  color: #b91c1c;
+  font-size: .86rem;
+}
+
+.ex-actions {
+  display: flex; gap: .75rem; margin-top: .5rem;
+}
+
+.ex-btn {
+  border-radius: 12px;
+  padding: .65rem 1rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  &--primary {
+    background: var(--ex-primary);
+    color: var(--ex-primary-contrast);
+    &:disabled { opacity: .6; cursor: not-allowed; }
+  }
+  &--ghost {
+    background: transparent; color: var(--ex-muted);
+    border-color: var(--ex-border);
+    &:hover { border-color: var(--ex-primary); color: var(--ex-primary); }
+  }
+}

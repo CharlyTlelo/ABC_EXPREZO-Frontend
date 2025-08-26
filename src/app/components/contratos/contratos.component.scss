@@ -5,10 +5,30 @@
 }
 
 .btn_add{
-    background-color: #009c03;
+    background-color: #d13c3c;
     color: white;
     font-weight: bold;
+    p{
+        margin: 0;
+        text-align: center;
+        padding: 5px 35px;
+    }
 }
+
+.btn-ir {
+  background-color: #00789c; /* rojo ABC Exprezo */
+  color: #fff;
+  border-radius: 5px;
+  padding: 0.15rem 0.55rem;
+  width: 70px;
+  border: none;
+  transition: background-color .2s ease;
+}
+
+.btn-ir:hover {
+  background-color: darken(#00789c, 8%); /* un poco más oscuro al hover */
+}
+
 
 /* Asegurar que la tabla use un layout fijo */
 .table-fixed {

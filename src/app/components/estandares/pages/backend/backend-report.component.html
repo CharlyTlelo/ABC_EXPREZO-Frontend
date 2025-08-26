@@ -1,0 +1,82 @@
+<h1 class="content-title">Reporte de Estándares – Backend</h1>
+
+<div class="report">
+  <div class="report-header">
+    <h3>Reporte de Estándares Backend – Documentación Actual (AdministradorBackEnd)</h3>
+    <div class="report-meta">
+      <span><strong>Proyecto:</strong> apizorro</span>
+      <span><strong>Versión (package.json):</strong> 1.0.0</span>
+      <span><strong>Tecnología:</strong> Sails.js ~0.12.13 (Node.js)</span>
+      <span><strong>Ámbito:</strong> Reporte descriptivo sin recomendaciones.</span>
+    </div>
+  </div>
+
+  <div class="report-section">
+    <h4>1) Estructura y componentes</h4>
+    <ul>
+      <li><strong>Controllers:</strong> 25 en <code>api/controllers/</code></li>
+      <li><strong>Services:</strong> 38 en <code>api/services/</code></li>
+      <li><strong>Models:</strong> 7 en <code>api/models/</code></li>
+      <li><strong>Rutas declaradas:</strong> 282 en <code>config/routes.js</code></li>
+      <li><strong>Prefijos:</strong> <code>/API/v1.0/...</code> (admin, clients, articles, operaciones, orders, report, domicilio, incidencias, ...)</li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>2) Scripts (package.json)</h4>
+    <ul>
+      <li><strong>start:</strong> <code>node app.js</code></li>
+      <li><strong>dev:</strong> <code>nodemon --ignore 'tmp/*' app.js && exit 0</code></li>
+      <li><strong>debug:</strong> <code>node debug app.js</code></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>3) Dependencias relevantes</h4>
+    <p><strong>Sails y ecosistema</strong></p>
+    <ul>
+      <li><code>sails</code> ~0.12.13</li>
+      <li><code>sails-mssql</code> 1.0.0</li>
+      <li><code>sails-disk</code> ~0.10.9</li>
+      <li><code>sails-hook-cron</code> ^3.1.0</li>
+      <li><code>sails-hook-email</code> ^0.12.1</li>
+    </ul>
+    <p><strong>Base de datos / acceso</strong></p>
+    <ul>
+      <li><code>mssql</code></li>
+    </ul>
+    <p><strong>Utilidades (selección)</strong></p>
+    <ul>
+      <li><code>axios</code>, <code>request</code></li>
+      <li><code>bcryptjs</code>, <code>crypto-js</code>, <code>uuid</code>, <code>underscore</code>, <code>utf8</code></li>
+      <li><code>sharp</code>, <code>xlsx</code>, <code>xml-js</code>, <code>xmldom</code></li>
+      <li><code>&#64;sendgrid/mail</code></li>
+      <li><code>aws-sdk</code>, <code>&#64;aws-sdk/client-cloudsearch-domain</code>, <code>algoliasearch</code></li>
+      <li><code>connect-multiparty</code>, <code>body-parser</code>, <code>zod</code></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>4) Configuración del framework</h4>
+    <ul>
+      <li><strong>config/models.js:</strong> <code>connection: sqlserver</code>; <code>migrate: safe</code></li>
+      <li><strong>config/connections.js:</strong> conexión <code>sqlserver</code> con <code>adapter: 'sails-mssql'</code></li>
+      <li><strong>config/cors.js:</strong> <code>origin: '*'</code>, <code>credentials: true</code></li>
+      <li><strong>config/session.js:</strong> define <code>secret</code></li>
+      <li><strong>config/policies.js:</strong> mapeos a <code>authenticated</code> (sin regla global <code>'*'</code> activa)</li>
+      <li><strong>config/http.js:</strong> <code>log4js</code> (<code>getLogger(\"allRoutes\")</code>) y <code>mssql</code> en hook HTTP</li>
+      <li><strong>config/env/development.js</strong> presente; <strong>production.js</strong> no observado con contenido</li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>5–10) Versionado, Logging, Hooks, Pruebas, Archivos, Resumen</h4>
+    <ul>
+      <li>Rutas con <code>/API/v1.0/...</code>, dominios admin/clients/articles/…</li>
+      <li>Logging con <code>log4js</code>; no se hallaron <em>Health/Ready</em> controllers por convención.</li>
+      <li>Hooks: <code>sails-hook-email</code>, <code>sails-hook-cron</code></li>
+      <li>Sin tests/lint configurados en scripts</li>
+      <li>Archivos clave: <code>config/*</code>, <code>package.json</code></li>
+    </ul>
+  </div>
+</div>

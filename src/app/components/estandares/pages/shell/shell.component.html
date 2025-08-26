@@ -1,0 +1,37 @@
+<div class="container">
+  <h2 class="titulo">Estándares Grupo Exprezo</h2>
+
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="section"
+           *ngFor="let s of sections; trackBy: trackSection"
+           [class.open]="isSectionOpen(s.key)">
+
+        <!-- Botón principal: alterna apertura SIN navegar -->
+        <button class="btn-main" type="button" (click)="toggleSection(s.key)">
+          <span class="title">{{ s.title }}</span>
+          <span class="caret" aria-hidden="true">▾</span>
+        </button>
+
+        <!-- Contenedor con transición (queda SIEMPRE en DOM) -->
+        <div class="submenu-wrap" [attr.data-key]="s.key">
+          <div class="submenu">
+            <button class="btn-sub"
+                    *ngFor="let a of areasBySection[s.key]; trackBy: trackArea"
+                    type="button"
+                    (click)="go(s.key, a.key)"
+                    [class.active]="isAreaActive(s.key, a.key)">
+              {{ a.title }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

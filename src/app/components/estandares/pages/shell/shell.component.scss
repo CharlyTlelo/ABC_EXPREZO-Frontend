@@ -1,0 +1,212 @@
+/*
+ * Estilos para el contenedor de estándares. Estos estilos replican
+ * la apariencia del componente original (estandares.component.scss),
+ * proporcionando botones primarios con flechas y submenús en forma
+ * de chips. Se mantienen las variables de color para facilitar
+ * ajustes futuros.
+ */
+
+@use "sass:color";
+
+$primary-color: #1f6b8f;
+$primary-active: #155b79;
+$chip-bg: #d9e7f0;
+$chip-border: #b7cfdf;
+$danger: #d13c3c;
+
+.container {
+  padding: 20px;
+}
+
+.titulo {
+  text-align: center;
+  margin: 0 0 16px;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  min-height: 70vh;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  background: #eef3f6;
+  border: 1px solid #e4edf3;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  background-color: $primary-color;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 12px;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: .2px;
+  transition: background-color .2s ease, box-shadow .2s ease, border-color .2s ease;
+
+  &:hover,
+  &.active {
+    background-color: $primary-active;
+    /* Ajuste manual del color usando sass:color para evitar problemas de compilación */
+    border-color: color.adjust($primary-color, $lightness: -10%);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
+  }
+}
+
+.caret {
+  margin-left: 8px;
+  transition: transform .2s ease;
+}
+
+.caret.up {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding-left: 2px;
+}
+
+.btn-sub {
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid $chip-border;
+  background: $chip-bg;
+  color: #214a5e;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease;
+
+  &:hover {
+    /* Ajuste de luminosidad para el hover */
+    background: color.adjust($chip-bg, $lightness: 3%);
+  }
+  &.active {
+    /* Cuando el submenú está activo, se resalta en tonos rojos para enfatizar la selección */
+    background: color.adjust($danger, $lightness: 36%);
+    border-color: color.adjust($danger, $lightness: 10%);
+    color: #7a1111;
+    box-shadow: 0 3px 10px rgba(0,0,0,.06);
+  }
+}
+
+/* ===== Contenido ===== */
+.content {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+}
+
+/* Layout general */
+.layout { display: flex; gap: 20px; }
+.sidebar { width: 30%; display: flex; flex-direction: column; gap: 12px; }
+.content { width: 70%; }
+
+/* Bloque de sección (acordeón) */
+.section {
+  background: #1f6b8f;
+  color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0,0,0,.06);
+
+  .btn-main {
+    width: 100%;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px;
+    border: 0; background: transparent; color: inherit;
+    font-weight: 700; letter-spacing: .2px; cursor: pointer;
+    transition: background .2s ease-in-out;
+    &:hover { background: rgba(255,255,255,.06); }
+    .caret { transition: transform .25s ease; }
+  }
+
+  /* Acceso directo a la sección (opcional) */
+  .btn-link {
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: #185871;
+    color: #d7eff8;
+    padding: 8px 14px;
+    font-size: .88rem;
+    cursor: pointer;
+    transition: background .2s ease;
+    &:hover { background: #164e64; }
+  }
+
+  /* Contenedor animado (alto auto con grid) */
+  .submenu-wrap {
+    display: grid;
+    grid-template-rows: 0fr;       /* cerrado */
+    transition: grid-template-rows .28s ease, padding .28s ease, background .28s ease;
+    background: #e9f3f7;
+    padding: 0 10px;               /* sin padding cerrado */
+
+    .submenu {
+      overflow: hidden;            /* necesario para el truco */
+      display: flex; flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 0;
+    }
+  }
+
+  /* Estado abierto */
+  &.open {
+    .btn-main .caret { transform: rotate(180deg); }
+    .submenu-wrap {
+      grid-template-rows: 1fr;     /* abierto */
+      padding: 10px;
+      .submenu { padding-top: 4px; }
+    }
+  }
+}
+
+/* Pills del submenú */
+.btn-sub {
+  background: #2aa7ad;
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease, background .2s ease;
+
+  &:hover { transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+  &.active { background: #ff5555; } /* activa (ajusta a tu paleta) */
+}
+
+/* Focus accesible */
+.btn-main:focus, .btn-link:focus, .btn-sub:focus {
+  outline: 2px solid rgba(0,0,0,.15); outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .layout { flex-direction: column; }
+  .sidebar, .content { width: 100%; }
+}

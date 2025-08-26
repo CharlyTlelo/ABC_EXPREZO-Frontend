@@ -1,0 +1,151 @@
+<h1 class="content-title">Reporte de Estándares – E‑Commerce Backend</h1>
+
+<!-- Contenido de reporte provisto por el usuario. Se utilizan las mismas clases de reportes
+     para heredar estilos y coherencia visual. -->
+<div class="report" ngNonBindable>
+  <div class="report-header">
+    <h3>Reporte de Estándares Backend – Documentación Actual (E-CommerceBackEnd)</h3>
+    <div class="report-meta">
+      <span><strong>Proyecto (package.json):</strong> apizorro</span>
+      <span><strong>Versión:</strong> 1.0.0</span>
+      <span><strong>Tecnología base:</strong> Sails.js ~0.12.14 (Node.js)</span>
+      <span><strong>Ámbito:</strong> Este reporte describe exclusivamente lo presente en el repositorio entregado, sin recomendaciones ni cambios.</span>
+    </div>
+  </div>
+
+  <div class="report-section">
+    <h4>1) Estructura y conteos</h4>
+    <ul>
+      <li><strong>Controllers:</strong> 33 en <code>api/controllers/</code> <em>(ej.: <code>ArticleController.js</code>, <code>CartController.js</code>, <code>AddressController.js</code>, …)</em></li>
+      <li><strong>Services:</strong> 46 en <code>api/services/</code></li>
+      <li><strong>Models:</strong> 13 en <code>api/models/</code></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>2) Ruteo (<code>config/routes.js</code>)</h4>
+    <ul>
+      <li><strong>Entradas de ruta identificadas:</strong> 169</li>
+      <li><strong>Prefijo de versión:</strong> <code>/API/v1.0/...</code></li>
+      <li><strong>Dominios (aprox.):</strong> <code>articles</code> (24), <code>clients</code> (12), <code>util</code> (11), <code>admin</code> (11), <code>openpay</code> (7), <code>address</code> (6), <code>operaciones</code> (5), <code>dhl</code> (4), otros: <code>articles-search</code>, <code>user</code>, <code>nps</code>, <code>aws-search</code>, <code>catalog</code>, <code>branches</code>, <code>shop</code>, <code>setOrders</code>, <code>referencia</code>, <code>domicilio</code>, …</li>
+      <li><strong>Formato observado:</strong> <code>'GET /API/v1.0/articles/list': 'ArticleController.list'</code></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>3) Scripts de NPM (<code>package.json</code>)</h4>
+    <ul>
+      <li><strong>start:</strong> <code>node app.js</code></li>
+      <li><strong>dev:</strong> <code>nodemon --ignore 'tmp/*' app.js &amp;&amp; exit 0</code></li>
+      <li><strong>debug:</strong> <code>node debug app.js</code></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>4) Dependencias relevantes (<code>package.json</code>)</h4>
+    <p><strong>Core Sails</strong></p>
+    <ul>
+      <li><code>sails</code> ~0.12.14, <code>sails-mssql</code> 1.0.0, <code>sails-disk</code> ~0.10.9</li>
+      <li>Hooks: <code>sails-hook-cron</code> ^3.1.0, <code>sails-hook-email</code> ^0.12.1</li>
+    </ul>
+    <p><strong>BD / almacenamiento / cache</strong></p>
+    <ul>
+      <li><code>mssql</code> ^6.4.1</li>
+      <li>Mongo/Mongoose presente: <code>mongoose</code> ^8.8.4</li>
+      <li>Redis: <code>redis</code> ^2.8.0, <code>ioredis</code> ^5.2.3, <code>keyv</code> ^4.0.4, <code>&#64;keyv/redis</code> ^2.3.4</li>
+    </ul>
+    <p><strong>Integraciones / utilidades (selección)</strong></p>
+    <ul>
+      <li><code>&#64;sendgrid/mail</code> ^7.0.0</li>
+      <li><code>aws-sdk</code> ^2.1691.0</li>
+      <li><code>openpay</code> ^1.0.3</li>
+      <li><code>one_msg_waba_sdk</code> ^2.39.5 (WhatsApp Business)</li>
+      <li><code>axios</code> ^0.24.0, <code>request</code> ^2.88.0</li>
+      <li><code>log4js</code> ^6.4.4 (logging), <code>newrelic</code> ^8.17.1 (APM)</li>
+      <li><code>pdfmake</code> ^0.1.68, <code>xml-js</code> ^1.6.11, <code>xmldom</code> ^0.2.1</li>
+      <li><code>connect-multiparty</code>, <code>body-parser</code>, <code>zod</code>, <code>uuid</code>, <code>crypto-js</code>, <code>underscore</code>, <code>moment</code>, <code>numeral</code>, <code>randomstring</code>, <code>jsbarcode</code>…</li>
+    </ul>
+    <p><strong>DevDependencies</strong></p>
+    <ul><li><code>nodemon</code> ^1.11.0</li></ul>
+  </div>
+
+  <div class="report-section">
+    <h4>5) Configuración del framework</h4>
+    <p><strong>5.1 Modelos (<code>config/models.js</code>)</strong></p>
+    <ul>
+      <li><code>connection: 'localDiskDb'</code></li>
+      <li><code>migrate: 'alter'</code> <em>(estado actual del repo)</em></li>
+    </ul>
+    <p><strong>5.2 Conexiones (<code>config/connections.js</code>)</strong></p>
+    <ul>
+      <li><code>sqlserver</code> con <code>adapter: 'sails-mssql'</code> (parametrizado por envs)</li>
+      <li><em>Plantillas de conexiones estándar Sails incluidas</em></li>
+    </ul>
+    <p><em>Nota:</em> por defecto <code>localDiskDb</code>/<code>sails-disk</code>; en despliegue real se ajusta por entorno.</p>
+    <p><strong>5.3 CORS (<code>config/cors.js</code>)</strong></p>
+    <ul><li><code>origin: '*'</code>, <code>credentials: true</code></li></ul>
+    <p><strong>5.4 Sesión (<code>config/session.js</code>)</strong></p>
+    <ul><li>Incluye <code>secret</code> (sin adapter definido)</li></ul>
+    <p><strong>5.5 Policies (<code>config/policies.js</code>)</strong></p>
+    <ul>
+      <li>Mapeos por acción a <code>authenticated</code></li>
+      <li>Ocurrencias de <code>authenticated</code>: 103</li>
+      <li>Sin regla global <code>'*'</code> activa</li>
+    </ul>
+    <p><strong>5.6 HTTP (<code>config/http.js</code>)</strong></p>
+    <ul><li>Uso de <code>log4js.getLogger(...)</code> en hook HTTP</li></ul>
+    <p><strong>5.7 Entornos (<code>config/env/</code>)</strong></p>
+    <ul><li><code>development.js</code> y <code>production.js</code> presentes</li></ul>
+  </div>
+
+  <div class="report-section">
+    <h4>6) Logging y observabilidad</h4>
+    <ul>
+      <li><code>log4js</code> en <code>config/http.js</code></li>
+      <li><code>newrelic.js</code> en raíz</li>
+      <li><code>ecosystem.config.js</code> (PM2) presente</li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>7) Versionado de API y dominios</h4>
+    <ul>
+      <li>Convención: <code>/API/v1.0/</code></li>
+      <li>Dominios: <code>articles</code>, <code>clients</code>, <code>admin</code>, <code>util</code>, <code>openpay</code>, <code>address</code>, <code>operaciones</code>, <code>dhl</code>, etc.</li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>8) Email, Jobs y otros hooks</h4>
+    <ul>
+      <li>Correo: <code>sails-hook-email</code></li>
+      <li>Tareas: <code>sails-hook-cron</code></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>9) Pruebas y linting</h4>
+    <ul><li>Sin scripts de test/lint en <code>package.json</code> (solo <code>debug/start/dev</code>)</li></ul>
+  </div>
+
+  <div class="report-section">
+  <h4>10) Archivos relevantes</h4>
+  <ul>
+    <li><code>config/routes.js</code>, <code>config/models.js</code>, <code>config/connections.js</code>, <code>config/cors.js</code>, <code>config/policies.js</code>, <code>config/http.js</code>, <code>config/env/&#123;development,production&#125;.js</code></li>
+    <li><code>package.json</code>, <code>app.js</code>, <code>newrelic.js</code>, <code>ecosystem.config.js</code></li>
+    <li><code>api/&#123;controllers,services,models&#125;</code></li>
+  </ul>
+</div>
+
+
+  <div class="report-section">
+    <h4>11) Resumen</h4>
+    <ul>
+      <li>Sails.js ~0.12.14 con SQL Server (<code>sails-mssql</code>) y <code>mongoose</code> instalado.</li>
+      <li>169 rutas en <code>/API/v1.0/...</code> (domains <code>articles</code>, <code>clients</code>, <code>admin</code>, <code>util</code>…)</li>
+      <li>Policies por acción a <code>authenticated</code> (sin regla global <code>*</code>).</li>
+      <li>CORS <code>*</code> + <code>credentials: true</code>.</li>
+      <li>Logging con <code>log4js</code>; APM <code>newrelic.js</code>; PM2 <code>ecosystem.config.js</code>.</li>
+    </ul>
+  </div>
+</div>

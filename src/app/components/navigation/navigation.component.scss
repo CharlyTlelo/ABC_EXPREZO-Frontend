@@ -7,6 +7,7 @@ a {
   color: #333; /* color base */
   margin-right: 20px;
   transition: color 0.3s;
+  font-weight: 600;
 }
 
 a:hover {
@@ -16,4 +17,9 @@ a:hover {
 a.active-link {
   color: red; /* rojo cuando está activo */
   font-weight: bold;
+}
+
+.collapse{
+  padding: 5px 0;
+  background: #d7d7d7;
 }

@@ -19,12 +19,12 @@ interface Repositorio {
 export class RepositoriosComponent {
 
 repositorios: Repositorio[] = [
-    { proyecto: 'Expreso', repositorio: 'AdministradorBackEnd', url: 'https://github.com/tu-usuario/AdministradorBackEnd' },
-    { proyecto: 'Expreso', repositorio: 'AdministradorFrontEnd', url: 'https://github.com/tu-usuario/AdministradorFrontEnd' },
-    { proyecto: 'Expreso', repositorio: 'E-CommerceBackEnd', url: 'https://github.com/tu-usuario/E-CommerceBackEnd' },
-    { proyecto: 'Expreso', repositorio: 'E-CommerceFrontEnd', url: 'https://github.com/tu-usuario/E-CommerceFrontEnd' },
-    { proyecto: 'Expreso', repositorio: 'ExprezoAfilacionFletero', url: 'https://github.com/tu-usuario/ExprezoAfilacionFletero' },
-    { proyecto: 'Expreso', repositorio: 'ExprezoAPITerceros', url: 'https://github.com/tu-usuario/ExprezoAPITerceros' },
-    { proyecto: 'Expreso', repositorio: 'ExprezoAplicacionMovil', url: 'https://github.com/tu-usuario/ExprezoAplicacionMovil' }
+    { proyecto: 'Exprezo', repositorio: 'AdministradorBackEnd', url: 'https://github.com/tu-usuario/AdministradorBackEnd' },
+    { proyecto: 'Exprezo', repositorio: 'AdministradorFrontEnd', url: 'https://github.com/tu-usuario/AdministradorFrontEnd' },
+    { proyecto: 'Exprezo', repositorio: 'E-CommerceBackEnd', url: 'https://github.com/tu-usuario/E-CommerceBackEnd' },
+    { proyecto: 'Exprezo', repositorio: 'E-CommerceFrontEnd', url: 'https://github.com/tu-usuario/E-CommerceFrontEnd' },
+    { proyecto: 'Exprezo', repositorio: 'ExprezoAfilacionFletero', url: 'https://github.com/tu-usuario/ExprezoAfilacionFletero' },
+    { proyecto: 'Exprezo', repositorio: 'ExprezoAPITerceros', url: 'https://github.com/tu-usuario/ExprezoAPITerceros' },
+    { proyecto: 'Exprezo', repositorio: 'ExprezoAplicacionMovil', url: 'https://github.com/tu-usuario/ExprezoAplicacionMovil' }
   ];
 }

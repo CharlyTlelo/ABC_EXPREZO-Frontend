@@ -24,8 +24,8 @@ export class ContratosComponent {
   contrato: Contratos[] = [
     {
       folio: 'contrato_01',
-      contrato: 'Concursos',
-      descripcion: 'Permite gestionar y visualizar concursos activos, facilitando la participación de usuarios mediante formularios de Google Forms.',
+      contrato: 'Push notification',
+      descripcion: 'Sistema de integracion para administración para envio de notificaciones a clientes.',
       url: 'https://github.com/tu-usuario/AdministradorBackEnd'
     }
   ];

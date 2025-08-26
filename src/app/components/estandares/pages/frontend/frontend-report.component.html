@@ -1,0 +1,134 @@
+<h1 class="content-title">Reporte de Estándares – Frontend</h1>
+
+<div class="report">
+  <div class="report-header">
+    <h3>Reporte de Estándares Frontend – Documentación Actual (AdministradorFrontEnd)</h3>
+    <div class="report-meta">
+      <span><strong>Proyecto (package.json):</strong> adminzorro</span>
+      <span><strong>Versión:</strong> 1.0.0</span>
+      <span><strong>Framework:</strong> Angular 11.x (<code>&#64;angular/core</code>: ^11.1.2, <code>&#64;angular/cli</code>: ~11.1.4)</span>
+      <span><strong>RxJS:</strong> según <code>package.json</code></span>
+      <span><strong>Alcance:</strong> Este documento describe exclusivamente lo presente en el repositorio, sin recomendaciones ni cambios.</span>
+      <span><strong>Fecha de exportación:</strong> 2025-08-22</span>
+    </div>
+  </div>
+
+  <div class="report-section">
+    <h4>1) Estructura y conteos</h4>
+    <ul>
+      <li><strong>Componentes:</strong> 106 (<code>*.component.ts</code> en <code>src/app/</code>)</li>
+      <li><strong>Módulos:</strong> 42 (<code>*.module.ts</code>)</li>
+      <li><strong>Servicios:</strong> 34 (<code>*.service.ts</code>)</li>
+      <li><strong>Guards:</strong> 3 (<code>has-permission.guard.ts</code>, <code>logged-in.guard.ts</code>, <code>not-logged-in.guard.ts</code>)</li>
+      <li><strong>Interceptors:</strong> 0 encontrados (<code>*interceptor.ts</code>)</li>
+      <li><strong>Pipes:</strong> 1</li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>2) Enrutamiento</h4>
+    <ul>
+      <li><strong>Archivos de routing:</strong> 20 (incluye <code>app-routing.module.ts</code> y módulos feature).</li>
+      <li><strong>Entradas de ruta identificadas:</strong> 107 (<code>path: '...'</code>).</li>
+      <li><strong>Prefijos/paths relevantes (muestra):</strong></li>
+    </ul>
+    <ul>
+      <li>admin, articles, clientes, domicilio, incidencias, orders, operaciones, report, home-banner, horarios-*, etc.</li>
+    </ul>
+    <p>&gt; Inventario completo disponible como CSV (archivo descargable).</p>
+  </div>
+
+  <div class="report-section">
+    <h4>3) Scripts de NPM (<code>package.json</code>)</h4>
+    <ul>
+      <li><strong>start:</strong> <code>ng serve</code></li>
+      <li><strong>build:</strong> <code>ng build</code></li>
+      <li><strong>build:prod:</strong> <code>ng build --aot --vendor-chunk --common-chunk --... --configuration production</code></li>
+      <li><strong>build:dev:</strong> <code>ng build --aot --vendor-chunk --common-chunk --... --configuration development</code></li>
+      <li><strong>test:</strong> <code>ng test</code></li>
+      <li><strong>lint:</strong> <code>ng lint</code></li>
+      <li><strong>e2e:</strong> <code>ng e2e</code></li>
+      <li><strong>postinstall:</strong> <code>ngcc</code></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>4) Dependencias y UI</h4>
+    <p><strong>Angular &amp; ecosistema</strong></p>
+    <ul>
+      <li><code>&#64;angular/*</code> 11.x (core, common, forms, router, <code>&#64;angular/cdk</code> 11.x)</li>
+    </ul>
+
+    <p><strong>UI / Componentes</strong></p>
+    <ul>
+      <li><strong>PrimeNG:</strong> <code>primeng</code> ^11.4.4</li>
+      <li><strong>Módulos importados (muestra, desde <code>app.module.ts</code>):</strong> <code>primeng/button</code>, <code>calendar</code>, <code>contextmenu</code>, <code>dialog</code>, <code>divider</code>, <code>dropdown</code>, <code>inputnumber</code>, <code>inputtext</code>, <code>inputtextarea</code>, <code>selectbutton</code>, <code>slider</code>, <code>table</code>, <code>tag</code>, <code>toast</code>, <code>tooltip</code>.</li>
+      <li><strong>Google Maps:</strong> <code>&#64;agm/core</code> ^1.1.0, <code>&#64;angular/google-maps</code> ^11.0.3</li>
+      <li><strong>DataTables:</strong> <code>angular-datatables</code>, <code>datatables.net</code>, <code>datatables.net-dt</code>, <code>datatables.net-buttons*</code>, <code>jquery</code> ^3.5.1</li>
+      <li><strong>SweetAlert2:</strong> <code>&#64;sweetalert2/ngx-sweetalert2</code> 9.0.0, <code>sweetalert2</code> 11.10.8</li>
+      <li><strong>Angular Material:</strong> presente <code>&#64;angular/material</code> ^14.2.4 (uso no observado en <code>app.module.ts</code>).</li>
+    </ul>
+
+    <p><strong>Estilos globales (<code>angular.json</code>)</strong></p>
+    <ul>
+      <li><code>src/styles.css</code></li>
+      <li><code>node_modules/primeng/resources/themes/saga-green/theme.css</code></li>
+      <li><code>node_modules/primeng/resources/primeng.min.css</code></li>
+      <li><code>node_modules/primeflex/primeflex.css</code></li>
+      <li><code>node_modules/primeicons/primeicons.css</code></li>
+      <li><code>node_modules/datatables.net-dt/css/jquery.dataTables.css</code></li>
+      <li><code>node_modules/datatables.net-buttons-dt/css/buttons.dataTables.css</code></li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>5) Configuración de entornos (<code>src/environments/*</code>)</h4>
+    <p><strong><code>environment.prod.ts</code> (claves relevantes)</strong></p>
+    <ul>
+      <li><code>production: true</code></li>
+      <li><code>url_api: 'https://adminapi.exprezo.site:1338/API/V1.0/'</code></li>
+      <li><strong>Parámetros AWS S3:</strong> <code>s3_bucketName</code>, <code>s3_albumBucketName</code>, <code>s3_bucketRegion</code>, <code>s3_IdentityPoolId</code>, <code>s3_img_route</code></li>
+      <li><strong>Impresión local:</strong> <code>url_server_pos</code>, <code>printer_name</code>, <code>url_server_crem_pos</code>, <code>printer_crem_name</code></li>
+      <li><strong>Integraciones:</strong> <code>GoogleMaps</code>, <code>Key</code>, <code>tokenCopomex</code>, <code>boton_pago</code></li>
+    </ul>
+    <p><code>environment.ts</code> contiene las mismas claves con valores para desarrollo.</p>
+  </div>
+
+  <div class="report-section">
+    <h4>6) Linting y pruebas</h4>
+    <ul>
+      <li><strong>Lint:</strong> <code>ng lint</code> (archivo <code>tslint.json</code> presente; <code>codelyzer</code> en <em>devDependencies</em>).</li>
+      <li><strong>Tests unitarios:</strong> <code>ng test</code> (Karma + Jasmine).</li>
+      <li><strong>E2E:</strong> <code>ng e2e</code> (Protractor ~7.0.0).</li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>7) Observaciones de configuración del proyecto</h4>
+    <ul>
+      <li><strong>Módulos vs. Standalone:</strong> se utiliza <em>NgModule</em> (<code>app.module.ts</code> presente); no se detectó <code>standalone: true</code> en componentes.</li>
+      <li><strong>Preprocesador de estilos:</strong> no se declararon opciones de preprocesador en <code>angular.json</code> (uso de <code>styles.css</code> y hojas de estilo de dependencias).</li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>8) Archivos relevantes detectados</h4>
+    <ul>
+      <li><code>angular.json</code>, <code>tsconfig.json</code>, <code>package.json</code></li>
+      <li><code>src/app/app.module.ts</code>, <code>src/app/app-routing.module.ts</code></li>
+      <li><code>src/environments/environment.ts</code>, <code>environment.prod.ts</code></li>
+      <li><code>src/styles.css</code> y CSS de PrimeNG/PrimeFlex/DataTables</li>
+    </ul>
+  </div>
+
+  <div class="report-section">
+    <h4>9) Resumen</h4>
+    <ul>
+      <li>Aplicación Angular 11 con PrimeNG 11, DataTables/jQuery, Google Maps y SweetAlert2.</li>
+      <li>106 componentes, 42 módulos, 34 servicios y 3 guards; 20 archivos de routing con 107 rutas declaradas.</li>
+      <li>Estilos globales incluyen tema PrimeNG Saga Green, PrimeFlex e integraciones de DataTables.</li>
+      <li>En producción <code>url_api</code> apunta a <code>https://adminapi.exprezo.site:1338/API/V1.0/</code>.</li>
+      <li>&gt; Inventario detallado disponible como CSV.</li>
+    </ul>
+  </div>
+</div>

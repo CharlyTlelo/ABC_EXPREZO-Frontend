@@ -1,11 +1,17 @@
+.title{
+  margin: 0 0 16px;
+  font-size: 40px;
+  font-weight: 700;
+}
+
 .table {
     background-color: #e9f7ff;
     border-radius: 10px;
   }
   
   .thead-dark th {
-    background-color: #007bff;
+    background-color: #dc3545;
     color: white;
-    border-bottom: 2px solid #0056b3;
+    border-bottom: 2px solid #b30000;
   }
   

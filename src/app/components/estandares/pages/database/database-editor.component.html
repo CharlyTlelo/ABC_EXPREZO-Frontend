@@ -1,0 +1,29 @@
+<h1 class="content-title">Modelo de Datos</h1>
+
+<!-- Barra de herramientas con acciones para crear, cargar y exportar diagramas -->
+<div class="db-toolbar">
+  <button class="btn" (click)="createNewDiagram()">Nuevo</button>
+  <label class="btn">
+    Cargar .drawio
+    <input type="file" accept=".drawio,.xml" (change)="loadFromFile($event)" hidden>
+  </label>
+  <div class="spacer"></div>
+  <button class="btn" (click)="requestExport('xml')">Exportar XML</button>
+  <button class="btn" (click)="requestExport('png')">Exportar PNG</button>
+  <button class="btn" (click)="requestExport('svg')">Exportar SVG</button>
+</div>
+
+<!-- Contenedor del iframe de draw.io -->
+<div class="drawio-wrapper">
+  <iframe #drawio class="drawio-frame"
+          title="Editor de Base de Datos"
+          [src]="drawIoUrl"
+          referrerpolicy="no-referrer"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+          allow="fullscreen">
+  </iframe>
+</div>
+
+<p class="muted small">
+  Tip: Puedes editar en vivo el diagrama de entidades (tablas, relaciones, índices) y exportarlo como evidencia para el reporte.
+</p>

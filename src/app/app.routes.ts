@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-// Componentes existentes del proyecto
+// === Componentes existentes del proyecto (deja los tuyos tal cual)
 import { GrupoComponent } from './components/grupo/grupo.component';
 import { FrameworkComponent } from './components/framework/framework.component';
 import { ArquitecturaComponent } from './components/arquitectura/arquitectura.component';
@@ -8,7 +8,7 @@ import { AwsComponent } from './components/aws/aws.component';
 import { RepositoriosComponent } from './components/repositorios/repositorios.component';
 import { SwaggerComponent } from './components/swagger/swagger.component';
 
-// Páginas de Estándares
+// Estándares (deja los tuyos)
 import { EstandaresLandingComponent } from './components/estandares/pages/landing/landing.component';
 import { EstandaresShellComponent } from './components/estandares/pages/shell/shell.component';
 import { FrontendReportComponent } from './components/estandares/pages/frontend/frontend-report.component';
@@ -19,7 +19,7 @@ import { EcommerceFrontendComponent } from './components/estandares/pages/ecomme
 import { EcommerceBackendComponent } from './components/estandares/pages/ecommerce/ecommerce-backend.component';
 
 export const routes: Routes = [
-  // === Rutas existentes ===
+  // === Rutas
   { path: 'abc-exprezo/grupo', component: GrupoComponent },
   { path: 'abc-exprezo/framework', component: FrameworkComponent },
   { path: 'abc-exprezo/arquitectura', component: ArquitecturaComponent },
@@ -27,27 +27,42 @@ export const routes: Routes = [
   { path: 'abc-exprezo/repositorios', component: RepositoriosComponent },
   { path: 'abc-exprezo/swagger', component: SwaggerComponent },
 
-  // === Contratos ===
+  // === Contratos: listado
   {
     path: 'abc-exprezo/contratos',
     loadComponent: () =>
       import('./components/contratos/contratos.component')
         .then(m => m.ContratosComponent)
   },
+  // Alta
   {
-    path: 'abc-exprezo/contratos/agregar-contrato',
+    path: 'abc-exprezo/contratos/agregar_contrato',
     loadComponent: () =>
       import('./components/contratos/agregar-contrato/agregar-contrato.component')
         .then(m => m.AgregarContratoComponent)
   },
+  // Modelado NUEVO formato: /contratos/modelado/:folio
+  {
+    path: 'abc-exprezo/contratos/modelado/:folio',
+    loadComponent: () =>
+      import('./components/contratos/modelado-contrato/modelado-contrato.component')
+        .then(m => m.ModeladoContratoComponent)
+  },
+  // Compatibilidad ruta vieja: /contratos/:folio/modelado  -> redirige
+  {
+    path: 'abc-exprezo/contratos/:folio/modelado',
+    redirectTo: 'abc-exprezo/contratos/modelado/:folio',
+    pathMatch: 'full'
+  },
+  // Detalle/edición básica por folio (si lo usas)
   {
     path: 'abc-exprezo/contratos/:folio',
     loadComponent: () =>
       import('./components/contratos/detalle-contrato/detalle-contrato.component')
         .then(m => m.DetalleContratoComponent)
-  }, // ← OJO: coma aquí
+  },
 
-  // === Estándares con rutas anidadas ===
+// === Estándares con rutas anidadas ===
   {
     path: 'abc-expreso/estandares',
     children: [

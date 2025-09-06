@@ -1,47 +1,25 @@
-<div class="ex-card">
-  <div class="ex-card__header">
-    <div>
-      <h3 class="m-0">Agregar nuevo contrato</h3>
-      <small>Completa la información del contrato</small>
-    </div>
-  </div>
+<div class="card p-3">
+  <h3 class="mb-3">Contrato: {{ oldFolio }}</h3>
 
-  <form class="ex-form" [formGroup]="form" (ngSubmit)="guardar()" novalidate>
-    <div class="ex-field">
-      <label class="ex-label">Folio</label>
-      <input class="ex-input" type="text" formControlName="folio" placeholder="Nombre folio" />
-      <div class="ex-error" *ngIf="form.controls.folio.touched && form.controls.folio.invalid">
-        El folio es obligatorio (ej. "contrato-01").
-      </div>
+  <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+    <div class="mb-3">
+      <label class="form-label">Folio</label>
+      <input type="text" class="form-control" formControlName="folio" placeholder="Ej: contrato-01">
     </div>
 
-    <div class="ex-field">
-      <label class="ex-label">Contrato</label>
-      <input class="ex-input" type="text" formControlName="contrato" placeholder="Nombre del contrato" />
-      <div class="ex-error" *ngIf="form.controls.contrato.touched && form.controls.contrato.invalid">
-        El nombre del contrato es obligatorio..
-      </div>
+    <div class="mb-3">
+      <label class="form-label">Contrato</label>
+      <input type="text" class="form-control" formControlName="contrato" placeholder="Nombre del contrato">
     </div>
 
-    <div class="ex-field">
-      <label class="ex-label">Descripción</label>
-      <textarea rows="3" class="ex-textarea" formControlName="descripcion" placeholder="Descripcion del proyecto"></textarea>
-      <div class="ex-error" *ngIf="form.controls.descripcion.touched && form.controls.descripcion.invalid">
-        La descripción es obligatoria, y debe ser lo mas clara posible para entendimiento del equipo Exprezo y terceros.
-      </div>
+    <div class="mb-3">
+      <label class="form-label">Descripción</label>
+      <textarea rows="3" class="form-control" formControlName="descripcion" placeholder="Breve descripción"></textarea>
     </div>
 
-    <div class="ex-actions">
-      <button class="ex-btn ex-btn--primary" type="submit" [disabled]="form.invalid || saving">
-        Agregar
-      </button>
-      <button class="ex-btn ex-btn--ghost" type="button" (click)="cancelar()">
-        Cancelar
-      </button>
-    </div>
-
-    <div class="alert alert-success mt-3" *ngIf="guardadoOK">
-      Información guardada con estatus <strong>Pendiente</strong>.
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit" [disabled]="form.invalid || saving">Guardar</button>
+      <button type="button" class="btn btn-outline-secondary" (click)="cancelar()">Cancelar</button>
     </div>
   </form>
 </div>

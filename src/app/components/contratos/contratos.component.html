@@ -1,9 +1,11 @@
 <div class="card p-3">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="m-0">Contratos</h2>
-    <button class="btn btn_add" (click)="irAgregar()">
-      <p>Agregar contrato</p>
-    </button>
+    <h2 class="m-0">Requerimientos</h2>
+    <div>
+      <button class="btn btn_add" (click)="irAgregar()">
+        <p>Agregar Requerimiento</p>
+      </button>
+    </div>
   </div>
 
   <div class="table-responsive">
@@ -11,10 +13,10 @@
       <thead>
         <tr>
           <th>Folio</th>
-          <th>Contrato</th>
+          <th>Requerimiento</th>
           <th>Descripción</th>
           <th>Estatus</th>
-          <th>Modelo</th>
+          <th style="width: 1%">Modelo</th>
         </tr>
       </thead>
       <tbody>
@@ -23,27 +25,54 @@
           <td>{{ c.contrato }}</td>
           <td>{{ c.descripcion }}</td>
           <td>
-            <span
-              class="badge text-bg-secondary"
+            <!-- Pendiente -->
+            <button
+              type="button"
+              class="badge-btn badge text-bg-secondary"
               *ngIf="c.estatus === 'Pendiente'"
-              >Pendiente</span
+              (click)="onStatusClick(c)"
             >
-            <span class="badge text-bg-info" *ngIf="c.estatus === 'En revision'"
-              >En revisión</span
+              Pendiente
+            </button>
+
+            <!-- En revisión -->
+            <button
+              type="button"
+              class="badge-btn badge text-bg-warning"
+              *ngIf="c.estatus === 'En revision'"
+              (click)="onStatusClick(c)"
             >
-            <span class="badge text-bg-success" *ngIf="c.estatus === 'Aprobado'"
-              >Aprobado</span
+              En revisión
+            </button>
+
+            <!-- Aprobado -->
+            <button
+              type="button"
+              class="badge-btn badge text-bg-success"
+              *ngIf="c.estatus === 'Aprobado'"
+              (click)="onStatusClick(c)"
             >
-            <span class="badge text-bg-danger" *ngIf="c.estatus === 'Rechazado'"
-              >Rechazado</span
+              Aprobado
+            </button>
+
+            <!-- Rechazado -->
+            <button
+              type="button"
+              class="badge-btn badge text-bg-danger"
+              *ngIf="c.estatus === 'Rechazado'"
+              (click)="onStatusClick(c)"
             >
+              Rechazado
+            </button>
           </td>
+
           <td>
-            <button class="btn btn-ir" (click)="verDetalle(c.folio)">Ir</button>
+            <button class="btn btn-ir" (click)="irModelado(c.folio)">Ir</button>
           </td>
         </tr>
+
         <tr *ngIf="contratos().length === 0">
-          <td colspan="5" class="text-center text-muted">Sin contratos</td>
+          <td colspan="5" class="text-center text-muted">Sin Requerimientos activos</td>
         </tr>
       </tbody>
     </table>

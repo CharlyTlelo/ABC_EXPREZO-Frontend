@@ -10,9 +10,9 @@ function slugify(value: string): string {
     .toString()
     .trim()
     .toLowerCase()
-    .replace(/[\s_]+/g, '-')     // espacios/_ -> -
-    .replace(/[^a-z0-9\-]/g, '') // quita símbolos
-    .replace(/\-+/g, '-');       // colapsa -- a -
+    .replace(/[\s_]+/g, '-')
+    .replace(/[^a-z0-9\-]/g, '')
+    .replace(/\-+/g, '-');
 }
 
 @Component({
@@ -28,11 +28,8 @@ export class DetalleContratoComponent {
   private svc = inject(ContratosService);
   private fb = inject(FormBuilder);
 
-  // folio de la URL (puede venir como "agregar_contrato" la primera vez)
-  oldFolio = this.route.snapshot.paramMap.get('contrato_01') || '';
-
+  oldFolio = this.route.snapshot.paramMap.get('folio') || '';
   saving = false;
-  guardadoOK = false;
 
   form = this.fb.group({
     folio: ['', [Validators.required, Validators.minLength(2)]],
@@ -49,7 +46,6 @@ export class DetalleContratoComponent {
         descripcion: existente.descripcion
       });
     } else {
-      // si no existe, precargar el folio visible con el segmento recibido (editable)
       this.form.patchValue({ folio: this.oldFolio });
     }
   }
@@ -59,22 +55,27 @@ export class DetalleContratoComponent {
   }
 
   guardar() {
-  if (this.form.invalid) return;
-  this.saving = true;
+    if (this.form.invalid) return;
+    this.saving = true;
 
-  const folioSlug = slugify(this.form.value.folio || '');
-  const payload: Contrato = {
-    folio: folioSlug,
-    contrato: this.form.value.contrato!,
-    descripcion: this.form.value.descripcion!,
-    estatus: 'Pendiente' // siempre por default
-  };
+    const folioSlug = slugify(this.form.value.folio || '');
+    const payload: Partial<Contrato> = {
+      folio: folioSlug,
+      contrato: this.form.value.contrato!,
+      descripcion: this.form.value.descripcion!,
+      estatus: 'Pendiente'
+    };
 
-  this.svc.upsertWithFolio(this.oldFolio || null, payload);
-  this.saving = false;
+    // Si cambió el folio, elimina el viejo y agrega como nuevo
+    if (this.oldFolio !== folioSlug) {
+      const current = this.svc.getByFolio(this.oldFolio);
+      if (current) this.svc.removeByFolio(this.oldFolio);
+      this.svc.add(payload as Contrato);
+    } else {
+      this.svc.updateByFolio(this.oldFolio, payload);
+    }
 
-  // 🔹 Redirigir directo al listado
-  this.router.navigate(['/abc-exprezo/contratos']);
-}
-
+    this.saving = false;
+    this.router.navigate(['/abc-exprezo/contratos']);
+  }
 }

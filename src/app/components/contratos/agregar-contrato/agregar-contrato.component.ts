@@ -10,9 +10,9 @@ function slugify(value: string): string {
     .toString()
     .trim()
     .toLowerCase()
-    .replace(/[\s_]+/g, '-')     // espacios/_ -> -
-    .replace(/[^a-z0-9\-]/g, '') // quita símbolos
-    .replace(/\-+/g, '-');       // colapsa -- a -
+    .replace(/[\s_]+/g, '-')
+    .replace(/[^a-z0-9\-]/g, '')
+    .replace(/\-+/g, '-');
 }
 
 @Component({
@@ -59,12 +59,6 @@ export class AgregarContratoComponent {
 
     this.svc.add(payload);
     this.saving = false;
-    this.guardadoOK = true;
-    // No navegamos automáticamente. Mostramos botón “Modelado”.
-  }
-
-  irModelado() {
-    const folio = this.folioSlug || slugify(this.form.value.folio || '');
-    if (folio) this.router.navigate(['/abc-exprezo/contratos', folio]);
+    this.router.navigate(['/abc-exprezo/contratos']);
   }
 }

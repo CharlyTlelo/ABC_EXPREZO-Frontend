@@ -7,11 +7,11 @@
 .btn_add{
     background-color: #d13c3c;
     color: white;
-    font-weight: bold;
+    font-weight: 400;
     p{
         margin: 0;
         text-align: center;
-        padding: 5px 35px;
+        padding: 2px 35px;
     }
 }
 
@@ -49,4 +49,15 @@
         color: white;
         width: 90px;
     }
+}
+
+.badge-btn {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  padding: .35em .6em;
+}
+.badge-btn:focus-visible {
+  outline: 2px solid rgba(0,0,0,.15);
+  outline-offset: 2px;
 }

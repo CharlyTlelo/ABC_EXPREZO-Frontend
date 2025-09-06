@@ -29,8 +29,9 @@ export class ContratosService {
     this._items.update(arr => {
       const idx = arr.findIndex(c => c.folio === folio);
       if (idx === -1) return arr;
-      const updated: Contrato = { ...arr[idx], ...payload, folio: arr[idx].folio };
-      const copy = [...arr]; copy[idx] = updated; return copy;
+      const copy = [...arr];
+      copy[idx] = { ...copy[idx], ...payload, folio: copy[idx].folio };
+      return copy;
     });
     this.persist();
   }
@@ -38,19 +39,5 @@ export class ContratosService {
   removeByFolio(folio: string) {
     this._items.update(arr => arr.filter(c => c.folio !== folio));
     this.persist();
-  }
-
-  /** Crea o actualiza; si cambia el folio, renombra moviendo el registro. */
-  upsertWithFolio(oldFolio: string | null, data: Contrato) {
-    if (!oldFolio || oldFolio === data.folio) {
-      // add o update in-place
-      const exists = !!this.getByFolio(data.folio);
-      if (exists) this.updateByFolio(data.folio, data);
-      else this.add(data);
-    } else {
-      // rename: eliminar el viejo y agregar el nuevo
-      this.removeByFolio(oldFolio);
-      this.add(data);
-    }
   }
 }

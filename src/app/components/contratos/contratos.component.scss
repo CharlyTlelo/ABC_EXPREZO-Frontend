@@ -1,18 +1,18 @@
-.title{
-    margin: 0 0 16px;
-    font-size: 40px;
-    font-weight: 700;
+.title {
+  margin: 0 0 16px;
+  font-size: 40px;
+  font-weight: 700;
 }
 
-.btn_add{
-    background-color: #d13c3c;
-    color: white;
-    font-weight: 400;
-    p{
-        margin: 0;
-        text-align: center;
-        padding: 2px 35px;
-    }
+.btn_add {
+  background-color: #d13c3c;
+  color: white;
+  font-weight: 400;
+  p {
+    margin: 0;
+    text-align: center;
+    padding: 2px 35px;
+  }
 }
 
 .btn-ir {
@@ -22,42 +22,67 @@
   padding: 0.15rem 0.55rem;
   width: 70px;
   border: none;
-  transition: background-color .2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .btn-ir:hover {
   background-color: darken(#00789c, 8%); /* un poco más oscuro al hover */
 }
 
-
 /* Asegurar que la tabla use un layout fijo */
 .table-fixed {
-    table-layout: fixed;
-    width: 100%;
+  table-layout: fixed;
+  width: 100%;
 }
 /* Ajustar el texto dentro de las celdas */
 .table-fixed th,
 .table-fixed td {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.text-center{
-    a{
-        background-color: #009c03;
-        color: white;
-        width: 90px;
-    }
+.text-center {
+  a {
+    background-color: #009c03;
+    color: white;
+    width: 90px;
+  }
 }
 
 .badge-btn {
   border: 0;
   cursor: pointer;
   font: inherit;
-  padding: .35em .6em;
+  padding: 0.35em 0.6em;
 }
 .badge-btn:focus-visible {
-  outline: 2px solid rgba(0,0,0,.15);
+  outline: 2px solid rgba(0, 0, 0, 0.15);
   outline-offset: 2px;
 }
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #fff;
+}
+.btn-success:hover {
+  filter: brightness(0.95);
+}
+
+/* Badges de estatus como elementos NO interactivos */
+.badge-btn {
+  cursor: default !important;     /* quita la mano de “link” */
+  pointer-events: none;           /* ignora clics/hover */
+  user-select: none;              /* no selecciona texto */
+}
+
+/* quita efectos visuales de foco/hover si tu tema los aplica */
+.badge-btn:hover,
+.badge-btn:focus,
+.badge-btn:active {
+  outline: 0;
+  box-shadow: none;
+  filter: none;
+}
+

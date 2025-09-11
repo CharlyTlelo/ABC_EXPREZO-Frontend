@@ -30,7 +30,6 @@
               type="button"
               class="badge-btn badge text-bg-secondary"
               *ngIf="c.estatus === 'Pendiente'"
-              (click)="onStatusClick(c)"
             >
               Pendiente
             </button>
@@ -40,7 +39,6 @@
               type="button"
               class="badge-btn badge text-bg-warning"
               *ngIf="c.estatus === 'En revision'"
-              (click)="onStatusClick(c)"
             >
               En revisión
             </button>
@@ -50,7 +48,6 @@
               type="button"
               class="badge-btn badge text-bg-success"
               *ngIf="c.estatus === 'Aprobado'"
-              (click)="onStatusClick(c)"
             >
               Aprobado
             </button>
@@ -60,19 +57,39 @@
               type="button"
               class="badge-btn badge text-bg-danger"
               *ngIf="c.estatus === 'Rechazado'"
-              (click)="onStatusClick(c)"
             >
               Rechazado
             </button>
           </td>
 
-          <td>
-            <button class="btn btn-ir" (click)="irModelado(c.folio)">Ir</button>
+          <td style="width: 1%">
+            <!-- Si está EN REVISIÓN, mostrar Firmar (verde) -->
+            <button
+              *ngIf="c.estatus === 'En revision'; else irBtn"
+              type="button"
+              class="btn btn-success"
+              (click)="firmar(c.folio)"
+            >
+              Firmar
+            </button>
+
+            <!-- En cualquier otro estatus, mostrar Ir -->
+            <ng-template #irBtn>
+              <button
+                type="button"
+                class="btn btn-ir"
+                (click)="irModelado(c.folio)"
+              >
+                Ir
+              </button>
+            </ng-template>
           </td>
         </tr>
 
         <tr *ngIf="contratos().length === 0">
-          <td colspan="5" class="text-center text-muted">Sin Requerimientos activos</td>
+          <td colspan="5" class="text-center text-muted">
+            Sin Requerimientos activos
+          </td>
         </tr>
       </tbody>
     </table>

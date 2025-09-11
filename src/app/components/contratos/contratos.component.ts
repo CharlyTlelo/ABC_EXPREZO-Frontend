@@ -9,7 +9,7 @@ import { ContratosService } from './services/contratos.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './contratos.component.html',
-  styleUrls: ['./contratos.component.scss']
+  styleUrls: ['./contratos.component.scss'],
 })
 export class ContratosComponent {
   private svc = inject(ContratosService);
@@ -52,14 +52,18 @@ export class ContratosComponent {
       confirmButtonText: 'Continuar',
       cancelButtonText: 'Cancelar',
       preConfirm: () => {
-        const user = (document.getElementById('swal-user') as HTMLInputElement)?.value?.trim();
-        const pass = (document.getElementById('swal-pass') as HTMLInputElement)?.value ?? '';
+        const user = (
+          document.getElementById('swal-user') as HTMLInputElement
+        )?.value?.trim();
+        const pass =
+          (document.getElementById('swal-pass') as HTMLInputElement)?.value ??
+          '';
         if (!user || !pass) {
           Swal.showValidationMessage('Ingresa usuario y contraseña');
           return;
         }
         return { user, pass };
-      }
+      },
     });
 
     if (!isConfirmed || !value) return;
@@ -69,11 +73,22 @@ export class ContratosComponent {
     // DEMO (mientras no conectamos backend). Quita/ajusta después:
     const okDemo = user === 'administrador' && pass === 'Zorro2025';
     if (!okDemo) {
-      await Swal.fire('Acceso denegado', 'Usuario o contraseña incorrectos.', 'error');
+      await Swal.fire(
+        'Acceso denegado',
+        'Usuario o contraseña incorrectos.',
+        'error'
+      );
       return;
     }
 
-    await Swal.fire('Validado', `Credenciales correctas para el folio ${folio}.`, 'success');
+    await Swal.fire(
+      'Validado',
+      `Credenciales correctas para el folio ${folio}.`,
+      'success'
+    );
+
+    // Ir a la vista de Requerimientos
+    this.router.navigate(['/abc-exprezo/contratos', 'requerimientos', folio]);
 
     // Si por ahora NO quieres mover estatus, no hagas nada más.
     // Cuando lo conectemos a backend, aquí harás el POST y decidirás qué hacer con el estatus.

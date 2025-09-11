@@ -31,38 +31,51 @@ export const routes: Routes = [
   {
     path: 'abc-exprezo/contratos',
     loadComponent: () =>
-      import('./components/contratos/contratos.component')
-        .then(m => m.ContratosComponent)
+      import('./components/contratos/contratos.component').then(
+        (m) => m.ContratosComponent
+      ),
   },
   // Alta
   {
     path: 'abc-exprezo/contratos/agregar_contrato',
     loadComponent: () =>
-      import('./components/contratos/agregar-contrato/agregar-contrato.component')
-        .then(m => m.AgregarContratoComponent)
+      import(
+        './components/contratos/agregar-contrato/agregar-contrato.component'
+      ).then((m) => m.AgregarContratoComponent),
   },
   // Modelado NUEVO formato: /contratos/modelado/:folio
   {
     path: 'abc-exprezo/contratos/modelado/:folio',
     loadComponent: () =>
-      import('./components/contratos/modelado-contrato/modelado-contrato.component')
-        .then(m => m.ModeladoContratoComponent)
+      import(
+        './components/contratos/modelado-contrato/modelado-contrato.component'
+      ).then((m) => m.ModeladoContratoComponent),
   },
   // Compatibilidad ruta vieja: /contratos/:folio/modelado  -> redirige
   {
     path: 'abc-exprezo/contratos/:folio/modelado',
     redirectTo: 'abc-exprezo/contratos/modelado/:folio',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   // Detalle/edición básica por folio (si lo usas)
   {
     path: 'abc-exprezo/contratos/:folio',
     loadComponent: () =>
-      import('./components/contratos/detalle-contrato/detalle-contrato.component')
-        .then(m => m.DetalleContratoComponent)
+      import(
+        './components/contratos/detalle-contrato/detalle-contrato.component'
+      ).then((m) => m.DetalleContratoComponent),
   },
 
-// === Estándares con rutas anidadas ===
+  // Requerimientos (nueva vista para aprobar/rechazar)
+  {
+    path: 'abc-exprezo/contratos/requerimientos/:folio',
+    loadComponent: () =>
+      import(
+        './components/contratos/requerimientos/requerimientos.component'
+      ).then((m) => m.RequerimientosComponent),
+  },
+
+  // === Estándares con rutas anidadas ===
   {
     path: 'abc-expreso/estandares',
     children: [
@@ -74,11 +87,11 @@ export const routes: Routes = [
         component: EstandaresShellComponent,
         children: [
           { path: 'frontend', component: EcommerceFrontendComponent },
-          { path: 'backend',  component: EcommerceBackendComponent },
+          { path: 'backend', component: EcommerceBackendComponent },
           { path: 'database', component: DatabaseEditorComponent },
           { path: 'maquetacion', component: EcommerceMaquetacionComponent },
-          { path: '', pathMatch: 'full', redirectTo: 'frontend' }
-        ]
+          { path: '', pathMatch: 'full', redirectTo: 'frontend' },
+        ],
       },
       // Otras secciones (administrador, abc) utilizan los componentes por defecto
       {
@@ -86,15 +99,15 @@ export const routes: Routes = [
         component: EstandaresShellComponent,
         children: [
           { path: 'frontend', component: FrontendReportComponent },
-          { path: 'backend',  component: BackendReportComponent },
+          { path: 'backend', component: BackendReportComponent },
           { path: 'database', component: DatabaseEditorComponent },
-          { path: '', pathMatch: 'full', redirectTo: 'frontend' }
-        ]
-      }
-    ]
+          { path: '', pathMatch: 'full', redirectTo: 'frontend' },
+        ],
+      },
+    ],
   },
 
   // === Redirecciones ===
   { path: '', redirectTo: '/abc-exprezo/grupo', pathMatch: 'full' },
-  { path: '**', redirectTo: '/abc-exprezo/grupo' }
+  { path: '**', redirectTo: '/abc-exprezo/grupo' },
 ];

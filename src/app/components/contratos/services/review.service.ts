@@ -1,28 +1,27 @@
 import { Injectable } from '@angular/core';
 
 export type ReviewDecision = 'aprobado' | 'rechazado';
+
 export interface ReviewEntry {
-  id: string;       // id del documento (PdfMeta.id)
-  folio: string;    // folio del contrato
+  id: string;
+  folio: string;
   decision: ReviewDecision;
-  reason?: string;  // requerido si 'rechazado'
+  reason?: string;
   timestamp: string;
 }
 
 const KEY = 'abcx-review-storage';
-
-// === Drafts de comentarios (guardado inmediato por doc) ===
 const DRAFT_KEY = 'abcx-review-drafts';
+
 interface DraftRecord {
-  id: string;        // PdfMeta.id
-  folio: string;     // contrato
-  reason: string;    // comentario
-  updatedAt: string; // ISO
+  id: string;
+  folio: string;
+  reason: string;
+  updatedAt: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class ReviewService {
-  // ---- decisiones finales ----
   private readAll(): ReviewEntry[] {
     try { return JSON.parse(localStorage.getItem(KEY) || '[]'); }
     catch { return []; }
@@ -33,13 +32,6 @@ export class ReviewService {
 
   getByFolio(folio: string): ReviewEntry[] {
     return this.readAll().filter(r => r.folio === folio);
-  }
-
-  upsert(entry: ReviewEntry) {
-    const all = this.readAll();
-    const idx = all.findIndex(e => e.id === entry.id && e.folio === entry.folio);
-    if (idx >= 0) all[idx] = entry; else all.push(entry);
-    this.writeAll(all);
   }
 
   upsertMany(entries: ReviewEntry[]) {
@@ -56,7 +48,7 @@ export class ReviewService {
     this.writeAll(rest);
   }
 
-  // ---- drafts de comentarios ----
+  // Drafts
   private readDrafts(): DraftRecord[] {
     try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || '[]'); }
     catch { return []; }
@@ -77,5 +69,8 @@ export class ReviewService {
   }
   deleteDraftReason(folio: string, id: string) {
     this.writeDrafts(this.readDrafts().filter(x => !(x.folio === folio && x.id === id)));
+  }
+  clearDraftsByFolio(folio: string) {
+    this.writeDrafts(this.readDrafts().filter(x => x.folio !== folio));
   }
 }

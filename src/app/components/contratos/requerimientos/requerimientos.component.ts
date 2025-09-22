@@ -11,7 +11,7 @@ import { ContratosService } from '../services/contratos.service';
 type DecisionState = {
   decision: 'aprobado' | 'rechazado' | 'none';
   reason: string;
-  commentSaved?: boolean; // si se guardó como “texto”
+  commentSaved?: boolean;
 };
 
 @Component({
@@ -41,10 +41,7 @@ export class RequerimientosComponent {
   };
 
   ngOnInit() {
-    // Todos los PDFs del folio (todas las secciones)
     this.docs = this.files.listByFolio(this.folio);
-
-    // Decisiones previas
     const prev = this.reviews.getByFolio(this.folio);
 
     for (const d of this.docs) {
@@ -53,20 +50,14 @@ export class RequerimientosComponent {
         decision: decided?.decision ?? 'none',
         reason: decided?.reason ?? ''
       };
-
-      // Cargar draft de comentario (si existe)
       const draft = this.reviews.getDraftReason(this.folio, d.id);
-      if (draft) {
-        this.state.set(d.id, { ...base, reason: draft, commentSaved: true });
-      } else {
-        this.state.set(d.id, base);
-      }
+      if (draft) this.state.set(d.id, { ...base, reason: draft, commentSaved: true });
+      else this.state.set(d.id, base);
     }
   }
 
   setDecision(docId: string, decision: ReviewDecision) {
     const curr = this.state.get(docId) || { decision: 'none', reason: '' };
-    // si pasó a aprobado, limpiamos cualquier draft guardado
     if (decision === 'aprobado' && curr.commentSaved) {
       this.reviews.deleteDraftReason(this.folio, docId);
       this.state.set(docId, { decision, reason: '', commentSaved: false });
@@ -99,7 +90,6 @@ export class RequerimientosComponent {
   }
 
   async aceptar() {
-    // Motivo obligatorio si se rechaza
     const invalid = this.docs.filter(d => {
       const s = this.state.get(d.id);
       return s?.decision === 'rechazado' && !s.reason.trim();
@@ -109,7 +99,6 @@ export class RequerimientosComponent {
       return;
     }
 
-    // Persistir decisiones finales
     const entries: ReviewEntry[] = this.docs
       .filter(d => (this.state.get(d.id)?.decision || 'none') !== 'none')
       .map(d => {
@@ -125,14 +114,20 @@ export class RequerimientosComponent {
 
     this.reviews.upsertMany(entries);
 
-    // Estatus del contrato
+    for (const e of entries) {
+      if (e.decision === 'rechazado') this.files.setReview(e.id, 'rechazado', e.reason);
+      else this.files.setReview(e.id, 'aprobado');
+    }
+
     const anyRejected = entries.some(e => e.decision === 'rechazado');
     const allDecided = entries.length === this.docs.length && this.docs.length > 0;
     const allApproved = allDecided && entries.every(e => e.decision === 'aprobado');
-
     const nextStatus = anyRejected ? 'Rechazado' : (allApproved ? 'Aprobado' : 'En revision');
-    this.contratos.updateByFolio(this.folio, { estatus: nextStatus as any });
+    this.contratos.updateByFolio(this.folio, { estatus: nextStatus } as any);
 
-    await Swal.fire('Guardado', 'Tus decisiones fueron registradas.', 'success');
+    this.reviews.clearDraftsByFolio(this.folio);
+
+    await Swal.fire('Guardado', 'Decisiones almacenadas (temporal).', 'success');
+    this.router.navigate(['/abc-exprezo/contratos']);
   }
 }

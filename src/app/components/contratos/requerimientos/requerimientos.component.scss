@@ -1,3 +1,12 @@
 .list-group-item { border: 1px solid rgba(0,0,0,.06); }
-.motivo-textarea { min-width: 260px; max-width: 420px; }
 .btn-group .btn { min-width: 110px; }
+
+.comentario-textarea { width: 100%; min-height: 160px; resize: vertical; }
+.btn-guardar-coment { min-width: 140px; }
+.comentario-readonly {
+  background: #f8f9fa;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 8px;
+  padding: 12px;
+}
+.comentario-text { white-space: pre-wrap; line-height: 1.4; }

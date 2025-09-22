@@ -2,9 +2,7 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <div>
       <h2 class="m-0">Requerimientos – Revisión de documentos</h2>
-      <small class="text-muted"
-        >Contrato: <strong>{{ folio }}</strong></small
-      >
+      <small class="text-muted">Contrato: <strong>{{ folio }}</strong></small>
     </div>
     <div class="d-flex gap-2">
       <button class="btn btn-outline-secondary" (click)="salir()">Salir</button>
@@ -18,93 +16,62 @@
 
   <div class="list-group" *ngIf="docs.length">
     <div class="list-group-item" *ngFor="let d of docs">
-      <div
-        class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3"
-      >
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
         <div class="flex-grow-1">
           <div class="fw-semibold text-truncate">
             <i class="fa-regular fa-file-pdf me-2"></i>{{ d.name }}
           </div>
           <div class="small text-muted">
-            {{ sectionTitle[d.section] || d.section }} ·
-            {{ d.size / 1024 | number : "1.0-0" }} KB ·
-            {{ d.createdAt | date : "short" }}
+            {{ sectionTitle[d.section] || d.section }} · {{ (d.size/1024) | number:'1.0-0' }} KB · {{ d.createdAt | date:'short' }}
           </div>
         </div>
 
         <div class="d-flex align-items-start gap-2 flex-md-shrink-0 flex-wrap">
-          <!-- Botones Aprobar / Rechazar -->
           <div class="btn-group" role="group" aria-label="Decisión">
-            <button
-              type="button"
-              class="btn"
-              [class.btn-outline-success]="
-                (state.get(d.id)?.decision || 'none') !== 'aprobado'
-              "
-              [class.btn-success]="
-                (state.get(d.id)?.decision || 'none') === 'aprobado'
-              "
-              (click)="setDecision(d.id, 'aprobado')"
-            >
+            <button type="button"
+                    class="btn"
+                    [class.btn-outline-success]="(state.get(d.id)?.decision || 'none') !== 'aprobado'"
+                    [class.btn-success]="(state.get(d.id)?.decision || 'none') === 'aprobado'"
+                    (click)="setDecision(d.id, 'aprobado')">
               Aprobar
             </button>
-            <button
-              type="button"
-              class="btn"
-              [class.btn-outline-danger]="
-                (state.get(d.id)?.decision || 'none') !== 'rechazado'
-              "
-              [class.btn-danger]="
-                (state.get(d.id)?.decision || 'none') === 'rechazado'
-              "
-              (click)="setDecision(d.id, 'rechazado')"
-            >
+            <button type="button"
+                    class="btn"
+                    [class.btn-outline-danger]="(state.get(d.id)?.decision || 'none') !== 'rechazado'"
+                    [class.btn-danger]="(state.get(d.id)?.decision || 'none') === 'rechazado'"
+                    (click)="setDecision(d.id, 'rechazado')">
               Rechazar
             </button>
           </div>
-
-          <!-- Motivo requerido si Rechazado -->
-          <!-- Comentario grande cuando está Rechazado -->
-          <div
-            class="mt-2 w-100"
-            *ngIf="state.get(d.id)?.decision === 'rechazado'"
-          >
-            <!-- Si NO está guardado, textarea grande + Guardar -->
-            <ng-container
-              *ngIf="!state.get(d.id)?.commentSaved; else comentarioGuardado"
-            >
-              <textarea
-                class="form-control comentario-textarea"
-                placeholder="Motivo del rechazo..."
-                [(ngModel)]="state.get(d.id)!.reason"
-                (ngModelChange)="onReasonChange(d.id, $event)"
-              >
-              </textarea>
-              <div class="mt-2">
-                <button
-                  class="btn btn-outline-primary btn-guardar-coment"
-                  (click)="guardarComentario(d.id)"
-                  [disabled]="!(state.get(d.id)?.reason || '').trim().length"
-                >
-                  Guardar
-                </button>
-              </div>
-            </ng-container>
-
-            <!-- Si ya se guardó, mostrar texto + Eliminar comentario -->
-            <ng-template #comentarioGuardado>
-              <div class="comentario-readonly">
-                <div class="comentario-text">{{ state.get(d.id)?.reason }}</div>
-                <button
-                  class="btn btn-sm btn-outline-danger mt-2"
-                  (click)="eliminarComentario(d.id)"
-                >
-                  Eliminar comentario
-                </button>
-              </div>
-            </ng-template>
-          </div>
         </div>
+      </div>
+
+      <div class="mt-2 w-100" *ngIf="state.get(d.id)?.decision === 'rechazado'">
+        <ng-container *ngIf="!state.get(d.id)?.commentSaved; else comentarioGuardado">
+          <textarea
+            class="form-control comentario-textarea"
+            placeholder="Motivo del rechazo..."
+            [(ngModel)]="state.get(d.id)!.reason"
+            (ngModelChange)="onReasonChange(d.id, $event)">
+          </textarea>
+          <div class="mt-2">
+            <button class="btn btn-outline-primary btn-guardar-coment"
+                    (click)="guardarComentario(d.id)"
+                    [disabled]="!(state.get(d.id)?.reason || '').trim().length">
+              Guardar
+            </button>
+          </div>
+        </ng-container>
+
+        <ng-template #comentarioGuardado>
+          <div class="comentario-readonly">
+            <div class="comentario-text">{{ state.get(d.id)?.reason }}</div>
+            <button class="btn btn-sm btn-outline-danger mt-2"
+                    (click)="eliminarComentario(d.id)">
+              Eliminar comentario
+            </button>
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

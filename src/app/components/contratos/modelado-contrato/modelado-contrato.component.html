@@ -1,112 +1,148 @@
 <div class="card shadow-sm exm-card">
-  <!-- ===== Encabezado con progreso global ===== -->
   <div class="card-body">
-    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
+    <div
+      class="d-flex flex-wrap justify-content-between align-items-start gap-3"
+    >
       <div>
-        <h2 class="card-title mb-1">Modelado del contrato:
+        <h2 class="card-title mb-1">
+          Modelado del contrato:
           <span class="text-danger fw-bold">{{ folio }}</span>
         </h2>
         <p class="text-muted mb-2">Recopilación de las 5 fases del contrato.</p>
 
         <div class="exm-progress">
           <div class="d-flex justify-content-between small text-muted mb-1">
-            <span>Avance: <strong>{{ stats.percent }}%</strong></span>
+            <span
+              >Avance: <strong>{{ stats.percent }}%</strong></span
+            >
             <span>
-              Docs listos: <strong>{{ stats.docsReady }}/{{ stats.totalDocs }}</strong> ·
-              Secciones completas: <strong>{{ stats.sectionsComplete }}/{{ stats.totalSections }}</strong>
+              Docs listos:
+              <strong>{{ stats.docsReady }}/{{ stats.totalDocs }}</strong> ·
+              Secciones completas:
+              <strong
+                >{{ stats.sectionsComplete }}/{{ stats.totalSections }}</strong
+              >
             </span>
           </div>
-          <div class="progress" style="height: 12px;">
-            <div class="progress-bar"
-                 [class.bg-success]="stats.percent === 100"
-                 [class.bg-warning]="stats.percent > 0 && stats.percent < 100"
-                 [style.width.%]="stats.percent"
-                 role="progressbar"
-                 [attr.aria-valuenow]="stats.percent"
-                 aria-valuemin="0" aria-valuemax="100">
-            </div>
-          </div>
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+     [attr.aria-valuenow]="stats.percent">
+  <div class="progress-bar" [style.width.%]="stats.percent"></div>
+</div>
+
         </div>
       </div>
 
-      <div class="d-flex gap-2 ms-auto">
-        <button class="btn btn-outline-primary" (click)="downloadAllZip()">
-          <i class="fa-solid fa-file-zipper me-1"></i> Descargar TODO (ZIP)
-        </button>
+      <div class="d-flex gap-2">
         <button class="btn btn-outline-secondary" (click)="cancelar()">
-          <i class="fa-solid fa-arrow-left"></i> Regresar
+          Regresar
+        </button>
+        <button class="btn btn-outline-primary" (click)="exportZip()">
+          Descargar TODO (ZIP)
         </button>
       </div>
     </div>
   </div>
 
-  <div class="list-group list-group-flush">
-    <div class="list-group-item" *ngFor="let s of sections">
-      <div class="d-flex justify-content-between flex-wrap align-items-center mb-2">
-        <!-- ===== Título + badge por sección ===== -->
-        <h4 class="mb-2 mb-md-0 d-flex align-items-center gap-2">
-          <i class="fa-solid fa-folder-open text-primary"></i>
-          <span>{{ s.title }}</span>
-          <span class="badge"
-                [class.text-bg-secondary]="!stats.perSection[s.key].complete"
-                [class.text-bg-success]="stats.perSection[s.key].complete">
-            {{ stats.perSection[s.key].ready }}/{{ stats.perSection[s.key].total }}
-          </span>
-        </h4>
+  <hr class="my-0" />
 
-        <div class="d-flex gap-2">
-          <button class="btn btn-outline-primary" [disabled]="s.items.length===0"
-                  (click)="downloadSectionZip(s.key)">
-            <i class="fa-solid fa-file-zipper me-1"></i> Descargar ZIP
-          </button>
+  <div class="p-3">
+    <div class="row g-3">
+      <div class="col-12" *ngFor="let s of sections">
+        <div class="border rounded p-3 h-100">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="m-0">{{ s.title }}</h5>
+            <small class="text-muted"
+              >{{ s.stats.ready }}/{{ s.stats.total }} listos</small
+            >
+          </div>
 
-          <label class="btn btn-primary">
-            <i class="fa-solid fa-upload me-1"></i> Subir PDF
-            <input type="file" class="d-none" accept="application/pdf"
-                   (change)="onFileSelected($event, s.key)">
-          </label>
+          <div
+            *ngIf="s.stats.hasRejected"
+            class="alert alert-danger py-2 px-3 mb-2"
+          >
+            Uno o más documentos fueron <strong>rechazados</strong>. Sube un
+            nuevo PDF y márcalo como <em>Listo</em> para volver a enviar a
+            revisión.
+          </div>
+
+          <div class="mb-2">
+            <input
+              type="file"
+              accept="application/pdf"
+              (change)="onFileSelected($event, s.key)"
+            />
+          </div>
+
+          <ng-container *ngIf="s.items.length; else empty">
+            <ul class="list-group list-group-flush">
+              <li
+                *ngFor="let f of s.items"
+                class="list-group-item d-flex justify-content-between align-items-center gap-3"
+              >
+                <div class="text-truncate">
+                  <i class="fa-regular fa-file-pdf me-2"></i>
+                  <strong class="me-2">{{ f.name }}</strong>
+                  <small class="text-muted"
+                    >{{ f.size / 1024 | number : "1.0-0" }} KB ·
+                    {{ f.createdAt | date : "short" }}</small
+                  >
+
+                  <div class="mt-1">
+                    <span
+                      *ngIf="f.review === 'rechazado'; else listoBadge"
+                      class="badge text-bg-danger"
+                    >
+                      Documento rechazado
+                    </span>
+                    <small
+                      *ngIf="f.review === 'rechazado' && f.reviewReason"
+                      class="text-danger ms-2"
+                    >
+                      {{ f.reviewReason }}
+                    </small>
+                    <ng-template #listoBadge>
+                      <span *ngIf="f.ready" class="badge text-bg-success"
+                        >Documento listo para revisión</span
+                      >
+                    </ng-template>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                  <div class="form-check">
+                    <input #cb
+       class="form-check-input"
+       type="checkbox"
+       [checked]="f.ready"
+       (change)="toggleReady(f, cb.checked)"
+       [attr.id]="'ready_' + f.id">
+
+<label class="form-check-label small" [attr.for]="'ready_' + f.id">Listo</label>
+
+                  </div>
+                  <button
+                    class="btn btn-sm btn-outline-secondary"
+                    (click)="descargar(f)"
+                    title="Descargar"
+                  >
+                    <i class="fa-solid fa-download"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="eliminar(f)"
+                    title="Eliminar"
+                  >
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </ng-container>
+
+          <ng-template #empty>
+            <div class="text-muted fst-italic">Sin archivos</div>
+          </ng-template>
         </div>
       </div>
-
-      <ng-container *ngIf="s.items.length > 0; else empty">
-        <ul class="list-unstyled exm-filelist">
-          <li *ngFor="let f of s.items" class="exm-file row g-2 align-items-center">
-            <div class="col-md-7 d-flex align-items-start">
-              <i class="fa-regular fa-file-pdf fa-lg me-2 text-danger opacity-75"></i>
-              <div>
-                <div class="fw-semibold">{{ f.name }}</div>
-                <small class="text-muted">
-                  {{ (f.size/1024) | number:'1.0-0' }} KB · {{ f.createdAt | date:'short' }}
-                </small>
-              </div>
-            </div>
-
-            <div class="col-md-5 text-md-end">
-              <ng-container *ngIf="!f.ready; else listo">
-                <button class="btn btn-link me-2" (click)="download(f)">
-                  <i class="fa-solid fa-download"></i> Descargar
-                </button>
-                <button class="btn btn-link text-success me-2" (click)="markReady(f)">
-                  <i class="fa-solid fa-check-double"></i> Listo para validar
-                </button>
-                <button class="btn btn-link text-danger" (click)="remove(f)">
-                  <i class="fa-solid fa-trash-can"></i> Eliminar
-                </button>
-              </ng-container>
-
-              <ng-template #listo>
-                <span class="badge text-bg-success">
-                  <i class="fa-solid fa-circle-check"></i> Documento listo para revisión
-                </span>
-              </ng-template>
-            </div>
-          </li>
-        </ul>
-      </ng-container>
-
-      <ng-template #empty>
-        <div class="text-muted fst-italic">Sin archivos</div>
-      </ng-template>
     </div>
   </div>
 </div>

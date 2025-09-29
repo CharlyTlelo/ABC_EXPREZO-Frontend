@@ -1,0 +1,29 @@
+<div class="page">
+  <a routerLink="/solicitudes" class="back">← Volver</a>
+  <h1>Nueva solicitud</h1>
+  <form (ngSubmit)="crear()" #f="ngForm" class="form">
+    <label>Título
+      <input name="titulo" [(ngModel)]="form.titulo" required minlength="3">
+    </label>
+    <label>Descripción
+      <textarea name="descripcion" [(ngModel)]="form.descripcion" rows="5"></textarea>
+    </label>
+    <div class="row">
+      <label>Tipo
+        <select name="tipo" [(ngModel)]="form.tipo">
+          <option value="FEATURE">Feature</option>
+          <option value="BUG">Bug</option>
+          <option value="SOPORTE">Soporte</option>
+        </select>
+      </label>
+      <label>Prioridad
+        <select name="prioridad" [(ngModel)]="form.prioridad">
+          <option value="ALTA">Alta</option>
+          <option value="MEDIA">Media</option>
+          <option value="BAJA">Baja</option>
+        </select>
+      </label>
+    </div>
+    <button class="btn" [disabled]="!f.valid">Crear</button>
+  </form>
+</div>

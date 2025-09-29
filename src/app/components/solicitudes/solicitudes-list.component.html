@@ -1,0 +1,17 @@
+<section class="layout">
+  <header class="toolbar">
+    <h1>Solicitudes</h1>
+    <div class="actions">
+      <input type="search" [(ngModel)]="filtro" placeholder="Buscar por título o ID" />
+      <select [(ngModel)]="estado">
+        <option value="">Todos los estados</option>
+        <option>PENDIENTE</option><option>LEVANTAMIENTO</option><option>REVISION</option>
+        <option>APROBADA</option><option>RECHAZADA</option><option>DESARROLLO</option>
+        <option>QA</option><option>UAT</option><option>LIBERADA</option><option>CERRADA</option>
+      </select>
+      <a class="btn" [routerLink]="['/solicitudes/nueva']">+ Nueva</a>
+    </div>
+  </header>
+
+  
+</section>

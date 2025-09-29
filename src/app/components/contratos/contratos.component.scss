@@ -4,6 +4,10 @@
   font-weight: 700;
 }
 
+h2{
+  font-weight: 700;
+}
+
 .btn_add {
   background-color: #d13c3c;
   color: white;
@@ -19,8 +23,7 @@
   background-color: #00789c; /* rojo ABC Exprezo */
   color: #fff;
   border-radius: 5px;
-  padding: 0.15rem 0.55rem;
-  width: 70px;
+  padding: 0.25rem 3rem;
   border: none;
   transition: background-color 0.2s ease;
 }
@@ -85,4 +88,44 @@
   box-shadow: none;
   filter: none;
 }
+
+/* Tabs */
+.req-tabs {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  .tab {
+    border: 1px solid #d7d7d7;
+    background: #fff;
+    padding: .45rem 4rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .tab.active {
+    background: #1f6b8f; 
+    color: #fff;
+    border-color: #00151f;
+  }
+  .badge {
+    display: inline-block;
+    padding: .125rem .5rem;
+    border-radius: 999px;
+    font-size: .75rem;
+    background: rgba(0,0,0,.08);
+    margin-left: .4rem;
+  }
+  .tab.active .badge { background: rgba(255,255,255,.25); }
+  .spacer { flex: 1; }
+}
+
+/* (Conserva el resto de tus estilos existentes) */
+
+.chip { padding:.25rem .6rem; border-radius:999px; font-weight:700; font-size:.8rem; }
+.chip-ok   { background:#e8f5e9; color:#2e7d32; }   /* APROBADO */
+.chip-rev  { background:#ffecb3; color:#8a6d00; }   /* REVISION */
+.chip-pend { background:#eceff1; color:#546e7a; }   /* PENDIENTE */
+
 

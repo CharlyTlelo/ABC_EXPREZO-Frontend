@@ -1,4 +1,4 @@
-export type ContratoStatus = 'Pendiente' | 'En revision' | 'Aprobado' | 'Rechazado';
+export type ContratoStatus = 'Pendiente' | 'En revisión' | 'Aprobado' | 'Rechazado';
 
 export interface Contrato {
   folio: string;          // usado en URL

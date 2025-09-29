@@ -1,0 +1,51 @@
+<div class="page" *ngIf="solicitud() as s">
+  <a routerLink="/solicitudes" class="back">← Volver</a>
+  <header class="head">
+    <div>
+      <h1>{{ s.titulo }} <small class="id">{{ s.id }}</small></h1>
+      <div class="meta">
+        <span class="chip" [attr.data-estado]="s.estado">{{ s.estado }}</span>
+        <span *ngIf="s.bloqueada" class="chip danger">Bloqueada</span>
+      </div>
+    </div>
+    <div class="actions">
+      <button *ngIf="s.estado==='LEVANTAMIENTO' && !canEnviarRevision()" disabled>Enviar a revisión</button>
+      <button *ngIf="s.estado==='LEVANTAMIENTO' && canEnviarRevision()" (click)="mover('REVISION')">Enviar a revisión</button>
+      <button *ngIf="s.estado==='REVISION'" (click)="mover('APROBADA')">Aprobar</button>
+      <button *ngIf="s.estado==='APROBADA'" (click)="mover('DESARROLLO')">A Desarrollo</button>
+      <button *ngIf="s.estado==='DESARROLLO'" (click)="mover('QA')">A QA</button>
+      <button *ngIf="s.estado==='QA'" (click)="mover('UAT')">A UAT</button>
+      <button *ngIf="s.estado==='UAT'" (click)="mover('LIBERADA')">Liberar</button>
+      <button *ngIf="s.estado==='LIBERADA'" (click)="mover('CERRADA')">Cerrar</button>
+    </div>
+  </header>
+
+  <section class="grid">
+    <article class="card">
+      <h3>Checklist</h3>
+      <label><input type="checkbox" [(ngModel)]="s.checklist.levantamiento.completo"> Levantamiento</label>
+      <label><input type="checkbox" [(ngModel)]="s.checklist.reqTecnico.completo"> Requerimiento técnico</label>
+      <label><input type="checkbox" [(ngModel)]="s.checklist.aprobacion.completo"> Aprobación</label>
+    </article>
+
+    <article class="card">
+      <h3>Progreso</h3>
+      <ol class="stepper">
+        <li *ngFor="let e of estadosLineales" [class.done]="e===s.estado || estadosLineales.indexOf(e) < estadosLineales.indexOf(s.estado)">
+          {{ e }}
+        </li>
+      </ol>
+    </article>
+
+    <article class="card">
+      <h3>Historial</h3>
+      <ul class="history">
+        <li *ngFor="let h of s.historial">
+          <span>{{ h.fecha | date:'short' }}</span> — <strong>{{ h.accion }}</strong>
+          <ng-container *ngIf="h.de && h.a"> ({{h.de}} → {{h.a}})</ng-container>
+          <span *ngIf="h.comentario"> · {{ h.comentario }}</span>
+        </li>
+      </ul>
+    </article>
+  </section>
+</div>

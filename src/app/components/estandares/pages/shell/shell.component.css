@@ -1,0 +1,234 @@
+@charset "UTF-8";
+/*
+ * Estilos para el contenedor de estándares. Estos estilos replican
+ * la apariencia del componente original (estandares.component.scss),
+ * proporcionando botones primarios con flechas y submenús en forma
+ * de chips. Se mantienen las variables de color para facilitar
+ * ajustes futuros.
+ */
+.container {
+  padding: 20px;
+}
+
+.titulo {
+  text-align: center;
+  margin: 0 0 16px;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 16px;
+  min-height: 70vh;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  background: #eef3f6;
+  border: 1px solid #e4edf3;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn-main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  background-color: #1f6b8f;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 12px;
+  text-align: left;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.btn-main:hover, .btn-main.active {
+  background-color: #155b79;
+  /* Ajuste manual del color usando sass:color para evitar problemas de compilación */
+  border-color: rgb(21.9137931034, 75.6379310345, 101.0862068966);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.caret {
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.caret.up {
+  transform: rotate(180deg);
+}
+
+.submenu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  padding-left: 2px;
+}
+
+.btn-sub {
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid #b7cfdf;
+  background: #d9e7f0;
+  color: #214a5e;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.btn-sub:hover {
+  /* Ajuste de luminosidad para el hover */
+  background: rgb(227.9698113208, 237.9283018868, 244.3301886792);
+}
+.btn-sub.active {
+  /* Cuando el submenú está activo, se resalta en tonos rojos para enfatizar la selección */
+  background: rgb(244.0439834025, 208.5560165975, 208.5560165975);
+  border-color: rgb(218.734439834, 101.265560166, 101.265560166);
+  color: #7a1111;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== Contenido ===== */
+.content {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+}
+
+/* Layout general */
+.layout {
+  display: flex;
+  gap: 20px;
+}
+
+.sidebar {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.content {
+  width: 70%;
+}
+
+/* Bloque de sección (acordeón) */
+.section {
+  background: #1f6b8f;
+  color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  /* Acceso directo a la sección (opcional) */
+  /* Contenedor animado (alto auto con grid) */
+  /* Estado abierto */
+}
+.section .btn-main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+.section .btn-main:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+.section .btn-main .caret {
+  transition: transform 0.25s ease;
+}
+.section .btn-link {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: #185871;
+  color: #d7eff8;
+  padding: 8px 14px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.section .btn-link:hover {
+  background: #164e64;
+}
+.section .submenu-wrap {
+  display: grid;
+  grid-template-rows: 0fr; /* cerrado */
+  transition: grid-template-rows 0.28s ease, padding 0.28s ease, background 0.28s ease;
+  background: #e9f3f7;
+  padding: 0 10px; /* sin padding cerrado */
+}
+.section .submenu-wrap .submenu {
+  overflow: hidden; /* necesario para el truco */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 0;
+}
+.section.open .btn-main .caret {
+  transform: rotate(180deg);
+}
+.section.open .submenu-wrap {
+  grid-template-rows: 1fr; /* abierto */
+  padding: 10px;
+}
+.section.open .submenu-wrap .submenu {
+  padding-top: 4px;
+}
+
+/* Pills del submenú */
+.btn-sub {
+  background: #2aa7ad;
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+  /* activa (ajusta a tu paleta) */
+}
+.btn-sub:hover {
+  transform: translateY(-1px);
+}
+.btn-sub:active {
+  transform: translateY(0);
+}
+.btn-sub.active {
+  background: #ff5555;
+}
+
+/* Focus accesible */
+.btn-main:focus, .btn-link:focus, .btn-sub:focus {
+  outline: 2px solid rgba(0, 0, 0, 0.15);
+  outline-offset: 2px;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .layout {
+    flex-direction: column;
+  }
+  .sidebar, .content {
+    width: 100%;
+  }
+}/*# sourceMappingURL=shell.component.css.map */

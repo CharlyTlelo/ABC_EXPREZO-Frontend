@@ -1,0 +1,17 @@
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}/*# sourceMappingURL=styles.css.map */

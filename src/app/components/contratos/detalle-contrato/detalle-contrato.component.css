@@ -1,0 +1,95 @@
+@charset "UTF-8";
+/* Colores ABC Exprezo: usa los que ya tengas en :root; aquí dejo fallbacks */
+:root {
+  --ex-primary: var(--abc-primary, #4f46e5); /* fallback índigo */
+  --ex-primary-contrast: #ffffff;
+  --ex-border: #e5e7eb;
+  --ex-muted: #6b7280;
+  --ex-bg: #ffffff;
+}
+
+.ex-card {
+  background: var(--ex-bg);
+  border: 1px solid var(--ex-border);
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+  padding: 1.25rem;
+}
+.ex-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--ex-border);
+}
+.ex-card__header h3 {
+  font-weight: 700;
+  padding: 0 0 20px 0;
+}
+.ex-card__header small {
+  color: var(--ex-muted);
+}
+
+.ex-form {
+  max-width: 880px;
+}
+
+.ex-field {
+  margin-bottom: 1rem;
+}
+
+.ex-label {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.ex-input, .ex-textarea, .ex-select {
+  width: 100%;
+  border: 1px solid #ffa5a5;
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  outline: none;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+.ex-input:focus, .ex-textarea:focus, .ex-select:focus {
+  border-color: var(--ex-primary);
+  box-shadow: 0 0 0 4px rgba(70, 144, 229, 0.15); /* halo */
+}
+
+.ex-error {
+  margin-top: 0.35rem;
+  color: #b91c1c;
+  font-size: 0.86rem;
+}
+
+.ex-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.ex-btn {
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.ex-btn--primary {
+  background: var(--ex-primary);
+  color: var(--ex-primary-contrast);
+}
+.ex-btn--primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.ex-btn--ghost {
+  background: transparent;
+  color: var(--ex-muted);
+  border-color: var(--ex-border);
+}
+.ex-btn--ghost:hover {
+  border-color: var(--ex-primary);
+  color: var(--ex-primary);
+}/*# sourceMappingURL=detalle-contrato.component.css.map */

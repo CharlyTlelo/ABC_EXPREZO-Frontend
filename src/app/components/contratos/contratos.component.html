@@ -10,13 +10,25 @@
 
   <!-- Tabs -->
   <div class="req-tabs mb-3">
-    <button class="tab" [class.active]="activeTab() === 'pendientes'" (click)="setTab('pendientes')">
+    <button
+      class="tab"
+      [class.active]="activeTab() === 'pendientes'"
+      (click)="setTab('pendientes')"
+    >
       Pendientes <span class="badge">{{ counts().pendientes }}</span>
     </button>
-    <button class="tab" [class.active]="activeTab() === 'revision'" (click)="setTab('revision')">
+    <button
+      class="tab"
+      [class.active]="activeTab() === 'revision'"
+      (click)="setTab('revision')"
+    >
       En revisión <span class="badge">{{ counts().revision }}</span>
     </button>
-    <button class="tab" [class.active]="activeTab() === 'aprobados'" (click)="setTab('aprobados')">
+    <button
+      class="tab"
+      [class.active]="activeTab() === 'aprobados'"
+      (click)="setTab('aprobados')"
+    >
       Aprobados <span class="badge">{{ counts().aprobados }}</span>
     </button>
     <span class="spacer"></span>
@@ -40,46 +52,71 @@
           <td>{{ c.contrato }}</td>
           <td>{{ c.descripcion }}</td>
 
-          <!-- CHIP de estatus (normalizado) -->
+          <!-- CHIP de estatus -->
           <td>
-            <span class="chip"
-                  [ngClass]="{
-                    'chip-pend': c.estatus==='Pendiente',
-                    'chip-rev' : c.estatus==='En revisión',
-                    'chip-ok'  : c.estatus==='Aprobado',
-                    'chip-rech': c.estatus==='Rechazado'
-                  }">
+            <span
+              class="chip"
+              [ngClass]="{
+                'chip-pend': c.estatus === 'Pendiente',
+                'chip-rev': c.estatus === 'En revisión',
+                'chip-ok': c.estatus === 'Aprobado',
+                'chip-rech': c.estatus === 'Rechazado'
+              }"
+            >
               {{ c.estatus }}
             </span>
           </td>
 
-          <!-- ACCIONES según estatus -->
+          <!-- ACCIONES -->
           <td>
-            <!-- En revisión: Firmar -> modal de credenciales -->
+            <!-- En revisión: Firmar -->
             <ng-container *ngIf="c.estatus === 'En revisión'; else otrosEstados">
-              <button class="btn btn-primary" (click)="abrirFirma(c.folio)">Firmar</button>
+              <button class="btn btn-primary" (click)="abrirFirma(c.folio)">
+                Firmar
+              </button>
             </ng-container>
 
             <ng-template #otrosEstados>
-              <!-- Pendiente: Ir a modelado / carga -->
-              <button *ngIf="c.estatus === 'Pendiente'" class="btn btn-ir" (click)="irModelado(c.folio)">Ir</button>
+              <!-- Pendiente -->
+              <button
+                *ngIf="c.estatus === 'Pendiente'"
+                class="btn btn-ir"
+                (click)="irModelado(c.folio)"
+              >
+                Ir
+              </button>
 
-              <!-- Aprobado: Ver/Descargar -->
-              <button *ngIf="c.estatus === 'Aprobado'" class="btn btn-secondary" (click)="verDetalle(c.folio)">Ver</button>
+              <!-- ✅ Aprobado: Descargar ZIP -->
+              <button
+                *ngIf="c.estatus === 'Aprobado'"
+                class="btn btn-secondary"
+                [disabled]="downloading"
+                (click)="descargar(c.folio)"
+              >
+                {{ downloading ? "Descargando…" : "Descargar" }}
+              </button>
 
-              <!-- Rechazado: volver a subir (reintentar) -->
-              <button *ngIf="c.estatus === 'Rechazado'" class="btn btn-outline-danger" (click)="irModelado(c.folio)">Reintentar</button>
+              <!-- Rechazado -->
+              <button
+                *ngIf="c.estatus === 'Rechazado'"
+                class="btn btn-outline-danger"
+                (click)="irModelado(c.folio)"
+              >
+                Reintentar
+              </button>
             </ng-template>
           </td>
         </tr>
 
-        <!-- Estado vacío según pestaña -->
+        <!-- Estado vacío -->
         <tr *ngIf="contratos().length === 0">
           <td colspan="5" class="text-center text-muted">
             {{
-              activeTab() === 'pendientes' ? 'Sin requerimientos pendientes' :
-              activeTab() === 'revision'   ? 'Sin requerimientos en revisión' :
-                                             'Sin requerimientos aprobados'
+              activeTab() === "pendientes"
+                ? "Sin requerimientos pendientes"
+                : activeTab() === "revision"
+                ? "Sin requerimientos en revisión"
+                : "Sin requerimientos aprobados"
             }}
           </td>
         </tr>
@@ -88,5 +125,8 @@
   </div>
 </div>
 
-<!-- Modal de Firma (se muestra cuando showFirma=true en el TS) -->
-<app-firma-dialog *ngIf="showFirma" (done)="onFirmaDone($event)"></app-firma-dialog>
+<!-- Modal de Firma -->
+<app-firma-dialog
+  *ngIf="showFirma"
+  (done)="onFirmaDone($event)"
+></app-firma-dialog>

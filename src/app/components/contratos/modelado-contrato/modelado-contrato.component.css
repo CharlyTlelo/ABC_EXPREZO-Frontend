@@ -1,0 +1,88 @@
+@charset "UTF-8";
+:root {
+  --ex-primary: var(--abc-primary, #4f46e5);
+  --ex-danger: var(--abc-danger, #b20505);
+  --ex-border: #e5e7eb;
+  --ex-muted: #6b7280;
+  --ex-bg: #fff;
+}
+
+.exm-card {
+  border-radius: 1rem;
+}
+
+.exm-filelist {
+  margin: 0;
+  padding: 0.25rem 0 0 0.25rem;
+}
+
+.exm-file {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  transition: box-shadow 0.15s ease, transform 0.05s ease;
+}
+.exm-file:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+.exm-file .btn.btn-link {
+  text-decoration: none;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.exm-file .btn.btn-link:hover {
+  text-decoration: underline;
+}
+
+/* Alineación y separación entre secciones */
+.list-group-item {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.exm-card {
+  border-radius: 1rem;
+}
+
+.exm-progress {
+  max-width: 640px;
+}
+
+.progress {
+  background-color: #eef2f7;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress .progress-bar {
+  transition: width 0.25s ease;
+}
+
+.exm-filelist {
+  margin: 0;
+  padding: 0.25rem 0 0 0.25rem;
+}
+
+.exm-file {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  transition: box-shadow 0.15s ease, transform 0.05s ease;
+}
+.exm-file:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+.exm-file .btn.btn-link {
+  text-decoration: none;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.exm-file .btn.btn-link:hover {
+  text-decoration: underline;
+}
+
+.list-group-item {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}/*# sourceMappingURL=modelado-contrato.component.css.map */

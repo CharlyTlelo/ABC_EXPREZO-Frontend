@@ -1,0 +1,20 @@
+.title {
+  margin: 0 0 16px;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.table-primary {
+  background-color: #30a9ad;
+  color: white;
+}
+
+.btn-outline-success {
+  border-color: #30a9ad;
+  color: #30a9ad;
+  width: 100px;
+}
+.btn-outline-success:hover {
+  background-color: #30a9ad;
+  color: white;
+}/*# sourceMappingURL=repositorios.component.css.map */

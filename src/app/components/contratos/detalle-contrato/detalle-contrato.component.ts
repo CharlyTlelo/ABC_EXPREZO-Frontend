@@ -37,6 +37,7 @@ export class DetalleContratoComponent {
     descripcion: ['', [Validators.required, Validators.minLength(2)]],
   });
 
+
   ngOnInit() {
     const existente = this.svc.getByFolio(this.oldFolio);
     if (existente) {

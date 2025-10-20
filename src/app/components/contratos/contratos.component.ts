@@ -3,7 +3,15 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ContratosService, Contrato } from './services/contratos.service';
-import { FirmaDialogComponent } from './shared/firma-dialog.component'; // 👈 asegúrate de que la ruta sea correcta
+import { FirmaDialogComponent } from './shared/firma-dialog.component';
+
+// === JSZip: usa UNA de estas dos opciones ===
+import JSZip from 'jszip';                      // opción A (con esModuleInterop)
+// import * as JSZip_ from 'jszip';             // opción B (universal)
+// const JSZip = JSZip_;                        // opción B (universal)
+
+import { saveAs } from 'file-saver';
+import { LocalPdfService } from './services/local-pdf.service';
 
 type TabKey = 'pendientes' | 'revision' | 'aprobados';
 
@@ -18,17 +26,22 @@ export class ContratosComponent {
   private svc = inject(ContratosService);
   private router = inject(Router);
 
+  // ✅ INYECTAR tu servicio de PDFs (faltaba)
+  private pdfs = inject(LocalPdfService);
+
   // agrega propiedad
-selectedFolio = '';
+  selectedFolio = '';
 
   // pestaña activa
-  activeTab = signal<TabKey>('pendientes');
+  activeTab = signal<'pendientes' | 'revision' | 'aprobados'>('aprobados');
 
   // controla el modal de firma
   showFirma = false;
 
   // Fuente: signal del servicio (se actualiza solo)
   contratosAll = this.svc.items;
+
+  downloading = false;
 
   /** Predicados por estatus (ojo: con tilde y mayúscula inicial) */
   private isApproved = (c: Contrato) => c.estatus === 'Aprobado';
@@ -56,24 +69,22 @@ selectedFolio = '';
   setTab(tab: TabKey) { this.activeTab.set(tab); }
 
   // Navegación / acciones
-  irAgregar() { this.router.navigate(['/abc-exprezo/contratos/agregar_contrato']); }
+  irAgregar()  { this.router.navigate(['/abc-exprezo/contratos/agregar_contrato']); }
   irModelado(folio: string) { this.router.navigate(['/abc-exprezo/contratos/modelado', folio]); }
   verDetalle(folio: string) { this.irModelado(folio); }
 
   // —— Botón FIRMAR (en pestaña "En revisión") ——
   abrirFirma(folio: string) {
-  this.selectedFolio = folio;
-  this.showFirma = true;
-}
-
+    this.selectedFolio = folio;
+    this.showFirma = true;
+  }
 
   onFirmaDone(ok: boolean) {
-  this.showFirma = false;
-  if (ok && this.selectedFolio) {
-    // ahora sí, ve a revisión con el folio
-    this.router.navigate(['/abc-exprezo/contratos/revision', this.selectedFolio]);
+    this.showFirma = false;
+    if (ok && this.selectedFolio) {
+      this.router.navigate(['/abc-exprezo/contratos/revision', this.selectedFolio]);
+    }
   }
-}
 
   /** Acciones del revisor (si las usas desde aquí) */
   aprobar(folio: string) {
@@ -106,8 +117,43 @@ selectedFolio = '';
     });
   }
 
+  // === DESCARGAR ZIP DE APROBADOS (solo front) ===
+  async descargar(folio: string) {
+    try {
+      this.downloading = true;
+
+      // Traer todos los PDFs del folio y quedarnos con los que tienen review 'aprobado'
+      const all = this.pdfs.listByFolio(folio);
+      const aprobados = all.filter(a => a.review === 'aprobado');
+
+      if (aprobados.length === 0) {
+        await Swal.fire('Sin archivos', 'Este folio no tiene archivos aprobados para descargar.', 'info');
+        return;
+      }
+
+      const zip = new JSZip();
+
+      // Agregar cada PDF al ZIP (desde localStorage -> base64/Blob)
+      for (const a of aprobados) {
+        const blob = this.pdfs.getPdfBlob(a.id);
+        if (blob) {
+          const nombre = a.name ? a.name : `${a.section}-${a.id}.pdf`;
+          zip.file(nombre, blob);
+        }
+      }
+
+      const content = await zip.generateAsync({ type: 'blob' });
+      saveAs(content, `aprobados_${folio}.zip`);
+    } catch (e) {
+      console.error(e);
+      Swal.fire('Error', 'No fue posible generar la descarga.', 'error');
+    } finally {
+      this.downloading = false;
+    }
+  }
+
   /** Carga inicial */
   ngOnInit() {
-    this.svc.list().subscribe(); // hidrata desde API (o localStorage si no hay backend)
+    this.svc.list().subscribe(); // hidrata desde API o localStorage
   }
 }

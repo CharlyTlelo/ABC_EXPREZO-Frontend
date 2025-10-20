@@ -1,0 +1,41 @@
+.title {
+  margin: 0 0 16px;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  margin-top: 40px;
+}
+
+.button-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.custom-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.3s ease;
+}
+.custom-button:hover {
+  transform: scale(1.05);
+}
+.custom-button img {
+  width: 150px;
+  height: auto;
+  border-radius: 50%;
+}
+
+.button-text {
+  text-transform: uppercase;
+  font-size: 20px;
+}/*# sourceMappingURL=arquitectura.component.css.map */

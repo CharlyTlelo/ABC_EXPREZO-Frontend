@@ -18,12 +18,11 @@ import { EcommerceMaquetacionComponent } from './components/estandares/pages/eco
 import { EcommerceFrontendComponent } from './components/estandares/pages/ecommerce/ecommerce-frontend.component';
 import { EcommerceBackendComponent } from './components/estandares/pages/ecommerce/ecommerce-backend.component';
 
-// ====== Hijos reutilizables para /abc-exprezo/estandares (OPCIÓN A) ======
+// ====== Hijos reutilizables para /abc-exprezo/estandares ======
 export const ESTANDARES_CHILDREN: Routes = [
-  // Landing de Estándares
   { path: '', pathMatch: 'full', component: EstandaresLandingComponent },
 
-  // Sección E-Commerce
+  // E-commerce (frente/atrás/db/maquetación)
   {
     path: 'ecommerce',
     component: EstandaresShellComponent,
@@ -36,35 +35,7 @@ export const ESTANDARES_CHILDREN: Routes = [
     ],
   },
 
-  // (Opcional) Solicitudes también accesible bajo Estándares
-  {
-    path: 'solicitudes',
-    children: [
-      {
-        path: '',
-        loadComponent: () =>
-          import('./components/solicitudes/solicitudes-list.component').then(
-            (m) => m.SolicitudesListComponent
-          ),
-      },
-      {
-        path: 'nueva',
-        loadComponent: () =>
-          import('./components/solicitudes/solicitud-form.component').then(
-            (m) => m.SolicitudFormComponent
-          ),
-      },
-      {
-        path: ':id',
-        loadComponent: () =>
-          import('./components/solicitudes/solicitud-detail.component').then(
-            (m) => m.SolicitudDetailComponent
-          ),
-      },
-    ],
-  },
-
-  // Otras secciones genéricas de Estándares
+  // Secciones generales de estándares (reportes)
   {
     path: ':section',
     component: EstandaresShellComponent,
@@ -87,72 +58,56 @@ export const routes: Routes = [
   { path: 'abc-exprezo/repositorios', component: RepositoriosComponent },
   { path: 'abc-exprezo/swagger', component: SwaggerComponent },
 
-  // Contratos
+  // -------- Contratos (agrupadas para evitar colisiones) --------
   {
     path: 'abc-exprezo/contratos',
-    loadComponent: () =>
-      import('./components/contratos/contratos.component').then(
-        (m) => m.ContratosComponent
-      ),
-  },
-  // alias seguro para no capturar "agregar" como :folio
-  {
-    path: 'abc-exprezo/contratos/agregar',
-    redirectTo: 'abc-exprezo/contratos/agregar_contrato',
-    pathMatch: 'full',
+    children: [
+      // Listado
+      {
+        path: '',
+        loadComponent: () =>
+          import('./components/contratos/contratos.component').then(
+            (m) => m.ContratosComponent
+          ),
+      },
+
+      // Agregar
+      {
+        path: 'agregar',
+        loadComponent: () =>
+          import(
+            './components/contratos/agregar-contrato/agregar-contrato.component'
+          ).then((m) => m.AgregarContratoComponent),
+      },
+
+      // Modelado y Revisión (específicas por folio)
+      {
+        path: 'modelado/:folio',
+        loadComponent: () =>
+          import(
+            './components/contratos/modelado-contrato/modelado-contrato.component'
+          ).then((m) => m.ModeladoContratoComponent),
+      },
+      {
+        path: 'revision/:folio',
+        loadComponent: () =>
+          import('./components/contratos/revision-contratos.component').then(
+            (m) => m.RevisionContratosComponent
+          ),
+      },
+
+      // Detalle (al final para no comerse otras rutas)
+      {
+        path: ':folio',
+        loadComponent: () =>
+          import(
+            './components/contratos/detalle-contrato/detalle-contrato.component'
+          ).then((m) => m.DetalleContratoComponent),
+      },
+    ],
   },
 
-  {
-    path: 'abc-exprezo/contratos/agregar_contrato',
-    loadComponent: () =>
-      import(
-        './components/contratos/agregar-contrato/agregar-contrato.component'
-      ).then((m) => m.AgregarContratoComponent),
-  },
-  {
-    path: 'abc-exprezo/contratos/modelado/:folio',
-    loadComponent: () =>
-      import(
-        './components/contratos/modelado-contrato/modelado-contrato.component'
-      ).then((m) => m.ModeladoContratoComponent),
-  },
-  {
-    path: 'abc-exprezo/contratos/:folio/modelado',
-    redirectTo: 'abc-exprezo/contratos/modelado/:folio',
-    pathMatch: 'full',
-  },
-  {
-    path: 'abc-exprezo/contratos/:folio',
-    loadComponent: () =>
-      import(
-        './components/contratos/detalle-contrato/detalle-contrato.component'
-      ).then((m) => m.DetalleContratoComponent),
-  },
-
-  {
-    path: 'abc-exprezo/contratos/revision',
-    loadComponent: () =>
-      import('./components/contratos/revision-contratos.component').then(
-        (m) => m.RevisionContratosComponent
-      ),
-  },
-
-  //Revision de contratos
-  {
-  path: 'abc-exprezo/contratos/revision/:folio',
-  loadComponent: () =>
-    import('./components/contratos/revision-contratos.component')
-      .then(m => m.RevisionContratosComponent),
-},
-
-
-  // Estándares (solo con "z")
-  {
-    path: 'abc-exprezo/estandares',
-    children: ESTANDARES_CHILDREN,
-  },
-
-  // Solicitudes (ruta directa al módulo)
+  // -------- Solicitudes (nivel raíz, como Contratos) --------
   {
     path: 'abc-exprezo/solicitudes',
     children: [
@@ -180,7 +135,11 @@ export const routes: Routes = [
     ],
   },
 
-  // Redirecciones del prefijo viejo (no obligatorias, pero recomendables)
+  // Estándares
+  { path: 'abc-exprezo/estandares', children: ESTANDARES_CHILDREN },
+
+  // -------- Redirecciones de compatibilidad --------
+  // Prefijo viejo "abc-expreso" -> "abc-exprezo"
   {
     path: 'abc-expreso/estandares',
     redirectTo: 'abc-exprezo/estandares',
@@ -198,6 +157,11 @@ export const routes: Routes = [
     path: 'abc-expreso/estandares/:s1/:s2/:s3',
     redirectTo: 'abc-exprezo/estandares/:s1/:s2/:s3',
   },
+
+  // ⚠️ Compatibilidad por si quedó algún link viejo sin prefijo:
+  { path: 'solicitudes', redirectTo: 'abc-exprezo/solicitudes', pathMatch: 'full' },
+  { path: 'solicitudes/:id', redirectTo: 'abc-exprezo/solicitudes/:id' },
+  { path: 'solicitudes/nueva', redirectTo: 'abc-exprezo/solicitudes/nueva' },
 
   // Home y comodín
   { path: '', redirectTo: '/abc-exprezo/grupo', pathMatch: 'full' },

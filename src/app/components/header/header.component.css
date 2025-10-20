@@ -1,0 +1,23 @@
+@charset "UTF-8";
+.header-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.header-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.header-title {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff; /* Texto blanco para que contraste con el fondo rojo */
+  font-size: 6rem; /* Tamaño del texto, ajusta según necesites */
+  font-weight: 600;
+  text-align: center;
+  z-index: 2;
+}/*# sourceMappingURL=header.component.css.map */

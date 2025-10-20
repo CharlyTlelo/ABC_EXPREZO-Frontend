@@ -6,8 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "build:prod": "ng build --configuration production",
     "test": "ng test",
     "serve:ssr:abcZorroFrontend": "node dist/abc-zorro-frontend/server/server.mjs"
+
+
   },
   "private": true,
   "dependencies": {
@@ -50,4 +53,10 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.4.2"
   }
+  
+
+
+
 }
+
+

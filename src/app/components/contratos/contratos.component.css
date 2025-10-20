@@ -1,0 +1,150 @@
+@charset "UTF-8";
+.title {
+  margin: 0 0 16px;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+h2 {
+  font-weight: 700;
+}
+
+.btn_add {
+  background-color: #d13c3c;
+  color: white;
+  font-weight: 400;
+}
+.btn_add p {
+  margin: 0;
+  text-align: center;
+  padding: 2px 35px;
+}
+
+.btn-ir {
+  background-color: #00789c; /* rojo ABC Exprezo */
+  color: #fff;
+  border-radius: 5px;
+  padding: 0.25rem 3rem;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-ir:hover {
+  background-color: rgb(0, 88.6153846154, 115.2); /* un poco más oscuro al hover */
+}
+
+/* Asegurar que la tabla use un layout fijo */
+.table-fixed {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* Ajustar el texto dentro de las celdas */
+.table-fixed th,
+.table-fixed td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-center a {
+  background-color: #009c03;
+  color: white;
+  width: 90px;
+}
+
+.badge-btn {
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  padding: 0.35em 0.6em;
+}
+
+.badge-btn:focus-visible {
+  outline: 2px solid rgba(0, 0, 0, 0.15);
+  outline-offset: 2px;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: #fff;
+}
+
+.btn-success:hover {
+  filter: brightness(0.95);
+}
+
+/* Badges de estatus como elementos NO interactivos */
+.badge-btn {
+  cursor: default !important; /* quita la mano de “link” */
+  pointer-events: none; /* ignora clics/hover */
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none; /* no selecciona texto */
+}
+
+/* quita efectos visuales de foco/hover si tu tema los aplica */
+.badge-btn:hover,
+.badge-btn:focus,
+.badge-btn:active {
+  outline: 0;
+  box-shadow: none;
+  filter: none;
+}
+
+/* Tabs */
+.req-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.req-tabs .tab {
+  border: 1px solid #d7d7d7;
+  background: #fff;
+  padding: 0.45rem 4rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.req-tabs .tab.active {
+  background: #1f6b8f;
+  color: #fff;
+  border-color: #00151f;
+}
+.req-tabs .badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  background: rgba(0, 0, 0, 0.08);
+  margin-left: 0.4rem;
+}
+.req-tabs .tab.active .badge {
+  background: rgba(255, 255, 255, 0.25);
+}
+.req-tabs .spacer {
+  flex: 1;
+}
+
+/* (Conserva el resto de tus estilos existentes) */
+.chip {
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.chip-ok {
+  background: #e8f5e9;
+  color: #2e7d32;
+} /* APROBADO */
+.chip-rev {
+  background: #ffecb3;
+  color: #8a6d00;
+} /* REVISION */
+.chip-pend {
+  background: #eceff1;
+  color: #546e7a;
+} /* PENDIENTE *//*# sourceMappingURL=contratos.component.css.map */

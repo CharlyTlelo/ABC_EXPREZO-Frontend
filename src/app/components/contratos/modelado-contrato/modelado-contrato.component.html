@@ -1,44 +1,29 @@
 <div class="card shadow-sm exm-card">
   <div class="card-body">
-    <div
-      class="d-flex flex-wrap justify-content-between align-items-start gap-3"
-    >
+    <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
       <div>
         <h2 class="card-title mb-1">
-          Modelado del contrato:
-          <span class="text-danger fw-bold">{{ folio }}</span>
+          Modelado del contrato: <span class="text-danger fw-bold">{{ folio }}</span>
         </h2>
-        <p class="text-muted mb-2">Recopilación de las 5 fases del contrato.</p>
 
+        <p class="text-muted mb-2">Recopilación de las fases del contrato.</p>
         <div class="exm-progress">
           <div class="d-flex justify-content-between small text-muted mb-1">
-            <span
-              >Avance: <strong>{{ stats.percent }}%</strong></span
-            >
-            <span>
-              Docs listos:
+            <span>Avance: <strong>{{ stats.percent }}%</strong></span>
+            <span>Docs listos:
               <strong>{{ stats.docsReady }}/{{ stats.totalDocs }}</strong> ·
               Secciones completas:
-              <strong
-                >{{ stats.sectionsComplete }}/{{ stats.totalSections }}</strong
-              >
+              <strong>{{ stats.sectionsComplete }}/{{ stats.totalSections }}</strong>
             </span>
           </div>
-          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100"
-     [attr.aria-valuenow]="stats.percent">
-  <div class="progress-bar" [style.width.%]="stats.percent"></div>
-</div>
-
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" [attr.aria-valuenow]="stats.percent">
+            <div class="progress-bar" [style.width.%]="stats.percent"></div>
+          </div>
         </div>
       </div>
-
       <div class="d-flex gap-2">
-        <button class="btn btn-outline-secondary" (click)="cancelar()">
-          Regresar
-        </button>
-        <button class="btn btn-outline-primary" (click)="exportZip()">
-          Descargar TODO (ZIP)
-        </button>
+        <button class="btn btn-outline-secondary" (click)="cancelar()">Regresar</button>
+        <button type="button" class="btn btn-outline-primary" (click)="exportZip()">Descargar TODO (ZIP)</button>
       </div>
     </div>
   </div>
@@ -46,102 +31,92 @@
   <hr class="my-0" />
 
   <div class="p-3">
-    <div class="row g-3">
-      <div class="col-12" *ngFor="let s of sections">
-        <div class="border rounded p-3 h-100">
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="m-0">{{ s.title }}</h5>
-            <small class="text-muted"
-              >{{ s.stats.ready }}/{{ s.stats.total }} listos</small
-            >
-          </div>
-
-          <div
-            *ngIf="s.stats.hasRejected"
-            class="alert alert-danger py-2 px-3 mb-2"
-          >
-            Uno o más documentos fueron <strong>rechazados</strong>. Sube un
-            nuevo PDF y márcalo como <em>Listo</em> para volver a enviar a
-            revisión.
-          </div>
-
-          <div class="mb-2">
-            <input
-              type="file"
-              accept="application/pdf"
-              (change)="onFileSelected($event, s.key)"
-            />
-          </div>
-
-          <ng-container *ngIf="s.items.length; else empty">
-            <ul class="list-group list-group-flush">
-              <li
-                *ngFor="let f of s.items"
-                class="list-group-item d-flex justify-content-between align-items-center gap-3"
-              >
-                <div class="text-truncate">
-                  <i class="fa-regular fa-file-pdf me-2"></i>
-                  <strong class="me-2">{{ f.name }}</strong>
-                  <small class="text-muted"
-                    >{{ f.size / 1024 | number : "1.0-0" }} KB ·
-                    {{ f.createdAt | date : "short" }}</small
-                  >
-
-                  <div class="mt-1">
-                    <span
-                      *ngIf="f.review === 'rechazado'; else listoBadge"
-                      class="badge text-bg-danger"
-                    >
-                      Documento rechazado
-                    </span>
-                    <small
-                      *ngIf="f.review === 'rechazado' && f.reviewReason"
-                      class="text-danger ms-2"
-                    >
-                      {{ f.reviewReason }}
-                    </small>
-                    <ng-template #listoBadge>
-                      <span *ngIf="f.ready" class="badge text-bg-success"
-                        >Documento listo para revisión</span
-                      >
-                    </ng-template>
-                  </div>
-                </div>
-                <div class="d-flex align-items-center gap-2 flex-shrink-0">
-                  <div class="form-check">
-                    <input #cb
-       class="form-check-input"
-       type="checkbox"
-       [checked]="f.ready"
-       (change)="toggleReady(f, cb.checked)"
-       [attr.id]="'ready_' + f.id">
-
-<label class="form-check-label small" [attr.for]="'ready_' + f.id">Listo</label>
-
-                  </div>
-                  <button
-                    class="btn btn-sm btn-outline-secondary"
-                    (click)="descargar(f)"
-                    title="Descargar"
-                  >
-                    <i class="fa-solid fa-download"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-outline-danger"
-                    (click)="eliminar(f)"
-                    title="Eliminar"
-                  >
-                    <i class="fa-solid fa-trash"></i>
-                  </button>
-                </div>
-              </li>
-            </ul>
-          </ng-container>
-
-          <ng-template #empty>
-            <div class="text-muted fst-italic">Sin archivos</div>
-          </ng-template>
+    <!-- SIEMPRE 5 secciones -->
+    <div class="col-12" *ngFor="let s of sections">
+      <div class="border rounded p-3 h-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="m-0">{{ s.title }}</h5>
+          <small class="text-muted">{{ s.stats.ready }}/{{ s.stats.total }} listos</small>
         </div>
+
+        <!-- Aviso de rechazados en la sección -->
+        <div *ngIf="s.stats.hasRejected" class="alert alert-danger py-2 px-3 mb-2">
+          Uno o más documentos fueron <strong>rechazados</strong>. Reemplaza
+          cada PDF rechazado y márcalo como <em>Listo</em> para volver a enviar
+          a revisión.
+        </div>
+
+        <!-- Subida inicial SOLO si NO hay rechazados en TODO el contrato -->
+        <div class="mb-2" *ngIf="!hasAnyRejected">
+          <input type="file" accept="application/pdf" (change)="onFileSelected($event, s.key)" />
+          <small class="text-muted ms-2">Sube el PDF de esta sección.</small>
+        </div>
+
+        <ng-container *ngIf="s.items.length; else empty">
+          <ul class="list-group list-group-flush">
+            <li
+              *ngFor="let f of s.items"
+              class="list-group-item d-flex justify-content-between align-items-center gap-3"
+            >
+              <div class="text-truncate">
+                <i class="fa-regular fa-file-pdf me-2"></i>
+                <strong class="me-2">{{ f.name }}</strong>
+                <small class="text-muted">
+                  {{ f.size / 1024 | number: '1.0-0' }} KB · {{ f.createdAt | date: 'short' }}
+                </small>
+                <div class="mt-1">
+                  <span *ngIf="f.review === 'rechazado'; else listoBadge" class="badge text-bg-danger">
+                    Documento rechazado
+                  </span>
+                  <small *ngIf="f.review === 'rechazado' && f.reviewReason" class="text-danger ms-2">
+                    {{ f.reviewReason }}
+                  </small>
+                  <ng-template #listoBadge>
+                    <span *ngIf="f.ready" class="badge text-bg-success">Documento listo para revisión</span>
+                  </ng-template>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                <div class="form-check">
+                  <input
+                    #cb
+                    class="form-check-input"
+                    type="checkbox"
+                    [checked]="f.ready"
+                    (change)="toggleReady(f, cb.checked)"
+                    [disabled]="f.review === 'aprobado'"
+                    [attr.id]="'ready_' + f.id"
+                  />
+                  <label class="form-check-label small" [attr.for]="'ready_' + f.id">Listo</label>
+                </div>
+
+                <button class="btn btn-sm btn-outline-secondary" (click)="descargar(f)" title="Descargar">
+                  <i class="fa-solid fa-download"></i>
+                </button>
+
+                <!-- Reemplazar: SOLO rechazados -->
+                <label *ngIf="f.review === 'rechazado'" class="btn btn-sm btn-outline-primary mb-0" title="Reemplazar PDF">
+                  Reemplazar
+                  <input type="file" accept="application/pdf" (change)="onReplaceSelected($event, f)" hidden />
+                </label>
+
+                <button
+                  class="btn btn-sm btn-outline-danger"
+                  (click)="eliminar(f)"
+                  [disabled]="f.review === 'aprobado'"
+                  title="Eliminar"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </div>
+            </li>
+          </ul>
+        </ng-container>
+
+        <ng-template #empty>
+          <div class="text-muted fst-italic">Sin archivos</div>
+        </ng-template>
       </div>
     </div>
   </div>

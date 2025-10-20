@@ -3,73 +3,143 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
-import { ContratosService, EstatusContrato } from './services/contratos.service';
+
+import {
+  ContratosService,
+  EstatusContrato,
+} from './services/contratos.service';
 import { LocalPdfService, PdfMeta } from './services/local-pdf.service';
 
-type Review = { decision: 'aprobado'|'rechazado'|'none'; reason: string; };
+type Decision = 'aprobado' | 'rechazado' | 'none';
+type ReviewState = { decision: Decision; reason: string };
 
 @Component({
   selector: 'app-revision-contratos',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   template: `
-  <div class="card p-3">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="m-0">Revisión de contratos</h2>
-      <a routerLink="/abc-exprezo/contratos" class="btn btn-outline-secondary">Volver</a>
-    </div>
-
-    <div class="mb-2 text-muted">Folio: <strong>{{ folio }}</strong></div>
-
-    <ng-container *ngIf="docs.length; else vacio">
-      <table class="table align-middle">
-        <thead>
-          <tr>
-            <th style="width:120px;">ID</th>
-            <th>Documento</th>
-            <th style="width:220px;">Decisión</th>
-            <th style="width:35%;">Comentario (opcional)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let d of docs; let i = index">
-            <td><code>{{ d.id }}</code></td>
-            <td>
-              <div class="fw-semibold">{{ d.name }}</div>
-              <div class="small text-muted">{{ d.section || 'PDF' }}</div>
-            </td>
-            <td>
-              <div class="btn-group" role="group">
-                <button type="button" class="btn"
-                        [class.btn-success]="state[i].decision==='aprobado'"
-                        [class.btn-outline-success]="state[i].decision!=='aprobado'"
-                        (click)="setDecision(i,'aprobado')">Aprobar</button>
-                <button type="button" class="btn"
-                        [class.btn-danger]="state[i].decision==='rechazado'"
-                        [class.btn-outline-danger]="state[i].decision!=='rechazado'"
-                        (click)="setDecision(i,'rechazado')">Rechazar</button>
-              </div>
-            </td>
-            <td>
-              <input class="form-control"
-                     [(ngModel)]="state[i].reason"
-                     placeholder="Motivo del rechazo / comentario" />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="d-flex justify-content-end gap-2">
-        <button class="btn btn-outline-secondary" (click)="guardarBorrador()">Guardar borrador</button>
-        <button class="btn btn-primary" (click)="guardarRevision()">Guardar revisión</button>
+    <div class="card p-3">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="m-0">Revisión de contratos</h2>
+        <a routerLink="/abc-exprezo/contratos" class="btn btn-outline-secondary"
+          >Volver</a
+        >
       </div>
-    </ng-container>
 
-    <ng-template #vacio>
-      <div class="alert alert-info m-0">No hay documentos para revisar en este folio.</div>
-    </ng-template>
-  </div>
-  `
+      <div class="mb-2 text-muted">
+        Folio: <strong>{{ folio }}</strong>
+      </div>
+
+      <!-- Toggle para segunda revisión -->
+      <div class="d-flex align-items-center gap-3 mb-2" *ngIf="hasRejected">
+        <div class="form-check form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="onlyRej"
+            [(ngModel)]="showOnlyRejected"
+          />
+          <label class="form-check-label" for="onlyRej"
+            >Ver solo rechazados</label
+          >
+        </div>
+        <small class="text-muted"
+          >Los documentos previamente aprobados están bloqueados.</small
+        >
+      </div>
+
+      <ng-container *ngIf="visibleDocs.length; else vacio">
+        <table class="table align-middle">
+          <thead>
+            <tr>
+              <th style="width:120px;">ID</th>
+              <th>Documento</th>
+              <th style="width:240px;">Decisión</th>
+              <th style="width:35%;">Comentario (opcional)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let d of visibleDocs; trackBy: trackById">
+              <td>
+                <code>{{ d.id }}</code>
+              </td>
+              <td>
+                <div class="fw-semibold">{{ d.name }}</div>
+                <div class="small text-muted">{{ d.section || 'PDF' }}</div>
+                <div class="mt-1">
+                  <span
+                    *ngIf="d.review === 'aprobado'"
+                    class="badge text-bg-success"
+                    >Aprobado previamente</span
+                  >
+                  <span
+                    *ngIf="d.review === 'rechazado'"
+                    class="badge text-bg-danger"
+                    >Rechazado previamente</span
+                  >
+                </div>
+              </td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Decisión">
+                  <button
+                    type="button"
+                    class="btn"
+                    [class.btn-success]="state[d.id]?.decision === 'aprobado'"
+                    [class.btn-outline-success]="
+                      state[d.id]?.decision !== 'aprobado'
+                    "
+                    (click)="setDecision(d.id, 'aprobado')"
+                    [disabled]="d.review === 'aprobado'"
+                  >
+                    Aprobar
+                  </button>
+                  <button
+                    type="button"
+                    class="btn"
+                    [class.btn-danger]="state[d.id]?.decision === 'rechazado'"
+                    [class.btn-outline-danger]="
+                      state[d.id]?.decision !== 'rechazado'
+                    "
+                    (click)="setDecision(d.id, 'rechazado')"
+                    [disabled]="d.review === 'aprobado'"
+                  >
+                    Rechazar
+                  </button>
+                </div>
+              </td>
+              <td>
+                <input
+                  class="form-control"
+                  [(ngModel)]="state[d.id].reason"
+                  [disabled]="d.review === 'aprobado'"
+                  placeholder="Motivo del rechazo / comentario"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button class="btn btn-outline-secondary" (click)="guardarBorrador()">
+            Guardar borrador
+          </button>
+          <button
+            class="btn btn-primary"
+            (click)="guardarRevision()"
+            [disabled]="!hasAnyDecision()"
+          >
+            Guardar revisión
+          </button>
+        </div>
+      </ng-container>
+
+      <ng-template #vacio>
+        <div class="alert alert-info m-0">
+          No hay documentos para revisar en este folio.
+        </div>
+      </ng-template>
+    </div>
+  `,
 })
 export class RevisionContratosComponent {
   private route = inject(ActivatedRoute);
@@ -78,52 +148,128 @@ export class RevisionContratosComponent {
   private files = inject(LocalPdfService);
 
   folio = '';
+  /** Todos los documentos del folio */
   docs: PdfMeta[] = [];
-  state: Review[] = [];
+  /** Estado por documento (id => estado) */
+  state: Record<string, ReviewState> = {};
+
+  /** UI: ver solo rechazados cuando existan */
+  showOnlyRejected = false;
+  hasRejected = false;
 
   ngOnInit() {
     this.folio = this.route.snapshot.paramMap.get('folio') || '';
-    // si no vino folio, regresar
     if (!this.folio) {
       this.router.navigate(['/abc-exprezo/contratos']);
       return;
     }
 
     this.docs = this.files.listByFolio(this.folio);
-    this.state = this.docs.map(() => ({ decision: 'none', reason: '' }));
+
+    // Precarga: si ya tenían review, respetarla para que el usuario “vea” el historial
+    this.state = {};
+    for (const d of this.docs) {
+      const decision: Decision =
+        d.review === 'aprobado'
+          ? 'aprobado'
+          : d.review === 'rechazado'
+          ? 'rechazado'
+          : 'none';
+
+      this.state[d.id] = {
+        decision,
+        reason: d.reviewReason ?? '',
+      };
+    }
+
+    // Si hay rechazados previos, mostramos solo rechazados
+    this.hasRejected = this.docs.some((d) => d.review === 'rechazado');
+    this.showOnlyRejected = this.hasRejected;
   }
 
-  setDecision(i: number, d: Review['decision']) { this.state[i].decision = d; }
+  /** Documentos visibles según el toggle */
+  get visibleDocs(): PdfMeta[] {
+    if (this.showOnlyRejected)
+      return this.docs.filter((d) => d.review === 'rechazado');
+    return this.docs;
+  }
+
+  trackById = (_: number, d: PdfMeta) => d.id;
+
+  setDecision(id: string, d: Decision) {
+    const curr = this.state[id] || { decision: 'none', reason: '' };
+    this.state[id] = { ...curr, decision: d };
+  }
+
+  hasAnyDecision(): boolean {
+    return this.visibleDocs.some((d) => this.state[d.id]?.decision !== 'none');
+  }
 
   async guardarBorrador() {
-  this.docs.forEach((doc, i) => {
-    const d = this.state[i].decision;
-    if (d === 'rechazado') {
-      this.files.setReview(doc.id, 'rechazado', this.state[i].reason);
-    } else if (d === 'aprobado') {
-      this.files.setReview(doc.id, 'aprobado', this.state[i].reason);
-    } // si es 'none', no guardamos nada (borrador implícito)
-  });
-  await Swal.fire('Borrador guardado', 'Se guardaron tus decisiones temporales.', 'success');
-}
-
+    // Simple: guardamos como “estado temporal” sobre el mismo storage local
+    for (const d of this.visibleDocs) {
+      const st = this.state[d.id];
+      if (!st) continue;
+      if (st.decision === 'aprobado')
+        this.files.setReview(d.id, 'aprobado', st.reason);
+      if (st.decision === 'rechazado')
+        this.files.setReview(d.id, 'rechazado', st.reason);
+    }
+    await Swal.fire(
+      'Borrador guardado',
+      'Se guardaron tus decisiones temporales.',
+      'success'
+    );
+  }
 
   async guardarRevision() {
-    // Aplicar decisiones a los archivos
-    this.docs.forEach((doc, i) => {
-      if (this.state[i].decision === 'rechazado') this.files.setReview(doc.id, 'rechazado', this.state[i].reason);
-      else if (this.state[i].decision === 'aprobado') this.files.setReview(doc.id, 'aprobado', this.state[i].reason);
-    });
+    // 1) Aplicar decisiones actuales
+    const decided = this.docs
+      .map((d) => ({
+        id: d.id,
+        decision: this.state[d.id]?.decision || 'none',
+        reason: (this.state[d.id]?.reason || '').trim(),
+      }))
+      .filter((e) => e.decision !== 'none');
 
-    // Calcular estatus del contrato
-    const anyRejected = this.state.some(s => s.decision === 'rechazado');
-    const allDecided = this.state.every(s => s.decision !== 'none') && this.state.length > 0;
-    const allApproved = allDecided && this.state.every(s => s.decision === 'aprobado');
+    for (const e of decided) {
+      if (e.decision === 'rechazado')
+        this.files.setReview(e.id, 'rechazado', e.reason);
+      else if (e.decision === 'aprobado')
+        this.files.setReview(e.id, 'aprobado', e.reason);
+    }
 
-    const next: EstatusContrato = anyRejected ? 'Rechazado' : (allApproved ? 'Aprobado' : 'En revisión');
+    // 2) Calcular estatus global
+    const anyRejected = this.docs.some(
+      (d) => (this.state[d.id]?.decision || d.review || 'none') === 'rechazado'
+    );
+
+    const allDecided =
+      this.docs.length > 0 &&
+      this.docs.every(
+        (d) =>
+          (this.state[d.id]?.decision || 'none') !== 'none' || d.review !== null
+      );
+
+    const allApproved =
+      allDecided &&
+      this.docs.every(
+        (d) =>
+          (this.state[d.id]?.decision || (d.review ?? 'none')) === 'aprobado'
+      );
+
+    const next: EstatusContrato = anyRejected
+      ? 'Pendiente'
+      : allApproved
+      ? 'Aprobado'
+      : 'En revisión';
     this.svc.updateByFolio(this.folio, { estatus: next });
 
-    await Swal.fire('Guardado', 'Las decisiones se guardaron correctamente.', 'success');
+    await Swal.fire(
+      'Guardado',
+      'Las decisiones se guardaron correctamente.',
+      'success'
+    );
     this.router.navigate(['/abc-exprezo/contratos']);
   }
 }

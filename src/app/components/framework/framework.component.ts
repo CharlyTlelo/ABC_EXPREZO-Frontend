@@ -1,26 +1,27 @@
+import { Component, OnInit } from '@angular/core';
+import { Framework, FrameworksService } from '../../services/frameworks/service';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+
 
 @Component({
   selector: 'app-framework',
-  standalone: true,
-  imports: [
-    CommonModule,
-  ],
+  standalone: true,                               // ⬅️ Standalone
+  imports: [CommonModule],                        // ⬅️ Habilita *ngFor, *ngIf, etc.
   templateUrl: './framework.component.html',
-  styleUrl: './framework.component.scss'
+  styleUrls: ['./framework.component.scss']
 })
-export class FrameworkComponent {
-technologies = [
-    { tecnologia: 'Node js', categoria: 'Motor de aplicaciones web', versionActual: '18.10.0', proximaVersion: 'por definir' },
-    { tecnologia: 'Sails JS ', categoria: 'Framework para proyectos backend basado en Node JS', versionActual: '1.15', proximaVersion: 'por definir' },
-    { tecnologia: 'Angular', categoria: 'Proyectos para clientes web', versionActual: '16', proximaVersion: 'por definir' },
-    { tecnologia: 'Flutter', categoria: 'Proyecto para cliente mobile', versionActual: '3.7', proximaVersion: 'por definir' },
-    { tecnologia: '.Net Framework', categoria: 'Proyecto de aplicaciones web (API)', versionActual: '3.5', proximaVersion: 'por definir' },
-    { tecnologia: 'Mongo DB', categoria: 'Base de datos ', versionActual: '8.0.8', proximaVersion: 'por definir' },
-    { tecnologia: 'Redis', categoria: 'Base de datos en cache', versionActual: '5.0.14', proximaVersion: 'por definir' },
-    { tecnologia: 'SQL Server', categoria: 'Motor principal de base de datos', versionActual: 'SQL Server 2019 Estándar', proximaVersion: 'por definir' },
-    { tecnologia: 'Windows Server', categoria: 'SO de servidores virtuales', versionActual: 'Windows Server 2019 R2', proximaVersion: 'por definir' },
 
-  ];
+export class FrameworkComponent implements OnInit {
+  technologies: Framework[] = [];
+  loading = true;
+  error = '';
+
+  constructor(private api: FrameworksService) {}
+
+  ngOnInit(): void {
+    this.api.list().subscribe({
+      next: data => { this.technologies = data; this.loading = false; },
+      error: err => { this.error = 'No se pudo cargar Frameworks'; console.error(err); this.loading = false; }
+    });
+  }
 }

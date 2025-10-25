@@ -1,30 +1,21 @@
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { RepoItem, RepositoriosService } from '../../services/repositorios/service';
 
-interface Repositorio {
-  proyecto: string;
-  repositorio: string;
-  url: string;
-}
 
 @Component({
   selector: 'app-repositorios',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   templateUrl: './repositorios.component.html',
-  styleUrl: './repositorios.component.scss'
+  styleUrls: ['./repositorios.component.scss']
 })
-export class RepositoriosComponent {
+export class RepositoriosComponent implements OnInit {
+  repositorios: RepoItem[] = [];
+  defaultUrl = 'https://github.com/CharlyTlelo/ABC_EXPREZO-Frontend';
 
-repositorios: Repositorio[] = [
-    { proyecto: 'Exprezo', repositorio: 'AdministradorBackEnd', url: 'https://github.com/tu-usuario/AdministradorBackEnd' },
-    { proyecto: 'Exprezo', repositorio: 'AdministradorFrontEnd', url: 'https://github.com/tu-usuario/AdministradorFrontEnd' },
-    { proyecto: 'Exprezo', repositorio: 'E-CommerceBackEnd', url: 'https://github.com/tu-usuario/E-CommerceBackEnd' },
-    { proyecto: 'Exprezo', repositorio: 'E-CommerceFrontEnd', url: 'https://github.com/tu-usuario/E-CommerceFrontEnd' },
-    { proyecto: 'Exprezo', repositorio: 'ExprezoAfilacionFletero', url: 'https://github.com/tu-usuario/ExprezoAfilacionFletero' },
-    { proyecto: 'Exprezo', repositorio: 'ExprezoAPITerceros', url: 'https://github.com/tu-usuario/ExprezoAPITerceros' },
-    { proyecto: 'Exprezo', repositorio: 'ExprezoAplicacionMovil', url: 'https://github.com/tu-usuario/ExprezoAplicacionMovil' }
-  ];
+  constructor(private api: RepositoriosService) {}
+  ngOnInit(): void { this.api.list().subscribe(d => this.repositorios = d); }
+
+  href(repo: RepoItem){ return repo.url && repo.url.trim() ? repo.url : this.defaultUrl; }
 }
